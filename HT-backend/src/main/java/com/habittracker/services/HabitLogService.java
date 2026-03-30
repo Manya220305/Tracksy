@@ -41,10 +41,19 @@ public class HabitLogService {
         return toDTO(habitLogRepository.save(log));
     }
 
-    public List<HabitLogDTO> getLogsForHabit(String username, Long habitId) {
+    public List<HabitLogDTO> getLogsForHabit(String username, Long habitId, Integer month, Integer year) {
         User user = getUser(username);
         Habit habit = habitRepository.findByIdAndUser(habitId, user)
                 .orElseThrow(() -> new RuntimeException("Habit not found: " + habitId));
+        
+        if (month != null && year != null) {
+            java.time.LocalDate start = java.time.LocalDate.of(year, month, 1);
+            java.time.LocalDate end = start.with(java.time.temporal.TemporalAdjusters.lastDayOfMonth());
+            return habitLogRepository.findByHabitAndDateBetweenOrderByDateAsc(habit, start, end).stream()
+                    .map(this::toDTO)
+                    .collect(Collectors.toList());
+        }
+        
         return habitLogRepository.findByHabitOrderByDateDesc(habit).stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());

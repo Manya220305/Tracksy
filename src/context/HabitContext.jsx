@@ -62,9 +62,16 @@ export const HabitProvider = ({ children }) => {
   };
 
   const deleteHabit = async (id) => {
-    await habitService.deleteHabit(id);
-    setHabits(prev => prev.filter(h => h.id !== id));
-    fetchStats();
+    try {
+      console.log('Deleting habit:', id);
+      await habitService.deleteHabit(id);
+      console.log('Delete API call succeeded for id:', id);
+      // Refetch everything from server to guarantee UI matches DB
+      await fetchHabits();
+      fetchStats();
+    } catch (error) {
+      console.error('Delete failed:', error?.response?.status, error?.response?.data, error);
+    }
   };
 
   const toggleHabit = async (id) => {

@@ -17,8 +17,8 @@ const habitService = {
   },
 
   deleteHabit: async (id) => {
-    const response = await api.delete(`/habits/${id}`);
-    return response.data;
+    console.log('Calling DELETE /habits/' + id);
+    await api.delete(`/habits/${id}`);
   },
 
   toggleHabit: async (id) => {
@@ -26,8 +26,16 @@ const habitService = {
     return response.data;
   },
 
-  getLogs: async (habitId) => {
-    const response = await api.get(`/habit-logs/${habitId}`);
+  getLogs: async (habitId, month, year) => {
+    const params = {};
+    if (month !== undefined) params.month = month;
+    if (year !== undefined) params.year = year;
+    const response = await api.get(`/habit-logs/${habitId}`, { params });
+    return response.data;
+  },
+
+  logHabit: async (logData) => {
+    const response = await api.post('/habit-logs', logData);
     return response.data;
   },
 };

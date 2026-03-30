@@ -20,8 +20,12 @@ const Habits = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this habit?')) {
+    console.log("Delete button clicked for habit id:", id);
+    try {
       await deleteHabit(id);
+      console.log("Delete completed for habit id:", id);
+    } catch (error) {
+      console.error("Delete failed:", error);
     }
   };
 

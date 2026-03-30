@@ -4,7 +4,9 @@ import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
-  const [darkMode, setDarkMode] = React.useState(false);
+  const [darkMode, setDarkMode] = React.useState(() => {
+    return document.documentElement.classList.contains('dark');
+  });
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);

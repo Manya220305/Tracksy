@@ -7,6 +7,7 @@ import com.habittracker.repositories.HabitRepository;
 import com.habittracker.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,10 +58,12 @@ public class HabitService {
         return toDTO(habitRepository.save(habit));
     }
 
+    @Transactional
     public void deleteHabit(String username, Long id) {
         User user = getUser(username);
         Habit habit = habitRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new RuntimeException("Habit not found with id: " + id));
+        System.out.println("Deleting habit with id: " + id);
         habitRepository.delete(habit);
     }
 

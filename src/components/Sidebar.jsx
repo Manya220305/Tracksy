@@ -18,7 +18,7 @@ const Sidebar = () => {
           <div className="p-1.5 bg-primary/10 rounded-lg">
             <LayoutDashboard size={24} className="text-primary" />
           </div>
-          <span className="text-[var(--color-foreground)]">HabitFlow</span>
+          <span className="text-[var(--color-foreground)]">Tracksy</span>
         </div>
       </div>
 

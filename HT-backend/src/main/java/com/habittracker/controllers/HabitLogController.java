@@ -30,7 +30,9 @@ public class HabitLogController {
     @GetMapping("/{habitId}")
     public ResponseEntity<List<HabitLogDTO>> getLogsForHabit(
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long habitId) {
-        return ResponseEntity.ok(habitLogService.getLogsForHabit(userDetails.getUsername(), habitId));
+            @PathVariable Long habitId,
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer year) {
+        return ResponseEntity.ok(habitLogService.getLogsForHabit(userDetails.getUsername(), habitId, month, year));
     }
 }

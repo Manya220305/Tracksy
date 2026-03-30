@@ -1,20 +1,53 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useHabits } from '../context/HabitContext';
 
 const WeeklyProgress = () => {
+  const navigate = useNavigate();
+  const { stats, loading } = useHabits();
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  const progress = [100, 80, 100, 40, 0, 0, 0]; 
+  
+  const weekdayStats = {
+    Mon: { completed: 0, total: 0 },
+    Tue: { completed: 0, total: 0 },
+    Wed: { completed: 0, total: 0 },
+    Thu: { completed: 0, total: 0 },
+    Fri: { completed: 0, total: 0 },
+    Sat: { completed: 0, total: 0 },
+    Sun: { completed: 0, total: 0 }
+  };
 
-  const CircularProgress = ({ value, label }) => {
+  if (stats && stats.dailyCompletionRates) {
+    Object.entries(stats.dailyCompletionRates).forEach(([dateStr, rate]) => {
+      const date = new Date(dateStr);
+      const day = date.toLocaleString("en-US", { weekday: "short" });
+      const totalHabits = stats.totalHabits || 0;
+      
+      if (weekdayStats[day]) {
+        weekdayStats[day].total += totalHabits;
+        weekdayStats[day].completed += (rate / 100) * totalHabits;
+      }
+    });
+  }
+
+  const progress = days.map(day => {
+    const { completed, total } = weekdayStats[day];
+    return total === 0 ? 0 : Math.round((completed / total) * 100);
+  });
+
+  const CircularProgress = ({ value, label, statInfo }) => {
     const radius = 20;
     const circumference = 2 * Math.PI * radius;
-    const strokeDashoffset = circumference - (value / 100) * circumference;
     
     let colorClass = 'text-gray-200 dark:text-gray-700'; 
     if (value === 100) colorClass = 'text-green-500';
     else if (value > 0) colorClass = 'text-yellow-500';
 
+    const completedCount = Math.round(statInfo.completed);
+    const totalCount = statInfo.total;
+
     return (
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center justify-center gap-2 group relative" title={`${completedCount}/${totalCount} ${label}s completed`}>
         <div className="relative w-14 h-14 flex items-center justify-center">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 50 50">
             <circle
@@ -33,8 +66,9 @@ const WeeklyProgress = () => {
               fill="transparent"
               stroke="currentColor"
               strokeWidth="4"
-              strokeDasharray={circumference}
-              strokeDashoffset={strokeDashoffset}
+              pathLength="100"
+              strokeDasharray={`${value} 100`}
+              strokeDashoffset="0"
               strokeLinecap="round"
               className={`${colorClass} transition-all duration-1000 ease-out`}
             />
@@ -46,20 +80,34 @@ const WeeklyProgress = () => {
           )}
         </div>
         <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{label}</span>
+        
+        {/* Simple count text on hover */}
+        <div className="absolute -top-8 bg-[var(--color-surface)] border border-[var(--color-border)] px-2 py-1 rounded text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-sm pointer-events-none">
+          {completedCount} / {totalCount} completed
+        </div>
       </div>
     );
   };
 
+  if (loading) {
+    return <div className="h-64 bg-[var(--color-surface)] rounded-2xl animate-pulse border border-[var(--color-border)]"></div>;
+  }
+
   return (
     <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border)] shadow-sm transition-colors duration-300">
       <div className="mb-6">
-        <h3 className="text-lg font-bold text-[var(--color-foreground)]">This Week</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400">Weekly completion preview</p>
+        <h3 className="text-lg font-bold text-[var(--color-foreground)]">Monthly Consistency</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Aggregated performance by weekday</p>
       </div>
 
-      <div className="flex justify-between items-center mt-8 gap-1">
+      <div className="grid grid-cols-7 gap-4 w-full mt-8">
         {days.map((day, index) => (
-          <CircularProgress key={day} label={day} value={progress[index]} />
+          <CircularProgress 
+            key={day} 
+            label={day} 
+            value={progress[index]} 
+            statInfo={weekdayStats[day]}
+          />
         ))}
       </div>
       
@@ -67,15 +115,18 @@ const WeeklyProgress = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-              4
+              {stats?.totalHabits || 0}
             </div>
             <div>
-              <p className="text-sm font-semibold text-[var(--color-foreground)]">Habits Left Today</p>
-              <p className="text-xs text-gray-500">Out of 8 total</p>
+              <p className="text-sm font-semibold text-[var(--color-foreground)]">Active Habits</p>
+              <p className="text-xs text-gray-500">Your current goals</p>
             </div>
           </div>
-          <button className="text-sm text-primary hover:text-primary-hover font-medium">
-            View All
+          <button 
+            onClick={() => navigate('/analytics')}
+            className="text-sm text-primary hover:text-primary-hover font-medium"
+          >
+            View Analytics
           </button>
         </div>
       </div>

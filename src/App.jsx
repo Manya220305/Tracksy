@@ -12,7 +12,13 @@ import { useAuth } from './context/AuthContext';
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   
-  if (loading) return null;
+  if (loading) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-[var(--color-background)]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   
   return children;
