@@ -28,6 +28,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "reminder_enabled", nullable = false, columnDefinition = "boolean default true")
+    @Builder.Default
+    private boolean reminderEnabled = true;
+
+    @Column(name = "reminder_time")
+    private java.time.LocalTime reminderTime;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

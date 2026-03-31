@@ -6,10 +6,14 @@ import { Plus } from 'lucide-react';
 import StatsCards from '../components/StatsCards';
 import ProgressChart from '../components/ProgressChart';
 import WeeklyProgress from '../components/WeeklyProgress';
+import useDailyReminder from '../hooks/useDailyReminder';
 
 const Dashboard = () => {
   const { addHabit } = useHabits();
   const [isFormOpen, setIsFormOpen] = React.useState(false);
+
+  // Invoke daily reminder
+  useDailyReminder();
 
   const handleSubmit = async (formData) => {
     await addHabit(formData);

@@ -1,6 +1,7 @@
 package com.habittracker.services;
 
 import com.habittracker.models.Achievement;
+import com.habittracker.models.NotificationType;
 import com.habittracker.models.User;
 import com.habittracker.repositories.AchievementRepository;
 import com.habittracker.repositories.HabitLogRepository;
@@ -21,6 +22,7 @@ public class AchievementsService {
     private final HabitRepository habitRepository;
     private final UserRepository userRepository;
     private final AnalyticsService analyticsService;
+    private final NotificationService notificationService;
 
     private User getUser(String username) {
         return userRepository.findByUsername(username)
@@ -44,6 +46,8 @@ public class AchievementsService {
                     .description(description)
                     .earnedAt(LocalDateTime.now())
                     .build());
+            
+            notificationService.createNotification(user, "Achievement Unlocked: " + title + " 🎉", NotificationType.ACHIEVEMENT);
         }
     }
 

@@ -51,14 +51,18 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
+        // This will authenticate against the DB once. If it fails, it throws an exception.
+        var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
+        // Retrieve the already loaded UserDetails from the successful authentication block
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        
+        // Fetch user from DB once if you strictly need the email, but otherwise we could just use UserDetails
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
         String token = jwtUtil.generateToken(userDetails);
 
         return AuthResponse.builder()

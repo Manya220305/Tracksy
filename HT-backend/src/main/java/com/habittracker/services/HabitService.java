@@ -2,6 +2,7 @@ package com.habittracker.services;
 
 import com.habittracker.dto.HabitDTO;
 import com.habittracker.models.Habit;
+import com.habittracker.models.NotificationType;
 import com.habittracker.models.User;
 import com.habittracker.repositories.HabitRepository;
 import com.habittracker.repositories.UserRepository;
@@ -18,6 +19,7 @@ public class HabitService {
 
     private final HabitRepository habitRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     private User getUser(String username) {
         return userRepository.findByUsername(username)
@@ -41,7 +43,9 @@ public class HabitService {
                 .frequency(dto.getFrequency() != null ? dto.getFrequency() : "Daily")
                 .difficulty(dto.getDifficulty() != null ? dto.getDifficulty() : "Medium")
                 .build();
-        return toDTO(habitRepository.save(habit));
+        Habit saved = habitRepository.save(habit);
+        notificationService.createNotification(user, "New habit created: " + saved.getName(), NotificationType.SYSTEM);
+        return toDTO(saved);
     }
 
     public HabitDTO updateHabit(String username, Long id, HabitDTO dto) {

@@ -26,43 +26,37 @@ const Achievements = () => {
       title: 'First Completion',
       description: 'Completed your first habit!',
       icon: Trophy,
-      type: 'Primary',
-      progress: 100,
+      color: 'blue',
     },
     {
       title: '7 Day Streak',
       description: 'Maintained a 7-day streak on any habit.',
       icon: Award,
-      type: 'Secondary',
-      progress: 0,
+      color: 'purple',
     },
     {
       title: 'Goal Setter',
       description: 'Tracking 5 or more habits.',
       icon: Target,
-      type: 'Success',
-      progress: 0,
+      color: 'green',
     },
     {
       title: '100 Habit Completions',
       description: 'Completed 100 habits total!',
       icon: Star,
-      type: 'Warning',
-      progress: 0,
+      color: 'yellow',
     },
     {
       title: '30 Day Consistency',
       description: 'Achieved a 30-day streak on any habit.',
       icon: Award,
-      type: 'Info',
-      progress: 0,
+      color: 'indigo',
     },
     {
       title: 'Century Streak',
       description: 'Achieved a 100-day streak on any habit.',
       icon: Trophy,
-      type: 'Danger',
-      progress: 0,
+      color: 'orange',
     },
   ];
 
@@ -77,11 +71,17 @@ const Achievements = () => {
   // Map earned achievements to the full list to show locked/unlocked state
   const achievementsWithState = allAchievements.map(base => {
     const earned = earnedAchievements.find(e => e.title === base.title);
+    let formattedDate = null;
+    if (earned && earned.earnedAt) {
+      const date = new Date(earned.earnedAt);
+      formattedDate = date.toLocaleDateString();
+    }
     return {
       ...base,
-      unlocked: !!earned,
+      isLocked: !earned,
       progress: earned ? 100 : 0, // Simplified progress
-      earnedAt: earned?.earnedAt
+      target: 100,
+      dateEarned: formattedDate
     };
   });
 

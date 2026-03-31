@@ -1,8 +1,10 @@
 package com.habittracker.services;
 
 import com.habittracker.dto.HabitLogDTO;
+import com.habittracker.dto.StreakResponse;
 import com.habittracker.models.Habit;
 import com.habittracker.models.HabitLog;
+import com.habittracker.models.NotificationType;
 import com.habittracker.models.User;
 import com.habittracker.repositories.HabitLogRepository;
 import com.habittracker.repositories.HabitRepository;
@@ -20,6 +22,8 @@ public class HabitLogService {
     private final HabitLogRepository habitLogRepository;
     private final HabitRepository habitRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
+    private final AnalyticsService analyticsService;
 
     private User getUser(String username) {
         return userRepository.findByUsername(username)
@@ -38,7 +42,26 @@ public class HabitLogService {
         log.setCompleted(dto.getCompleted() != null ? dto.getCompleted() : false);
         log.setNotes(dto.getNotes());
 
-        return toDTO(habitLogRepository.save(log));
+        HabitLog savedLog = habitLogRepository.save(log);
+
+        if (Boolean.TRUE.equals(dto.getCompleted())) {
+            // Check streak after completing
+            List<StreakResponse> streaks = analyticsService.getStreaks(username);
+            streaks.stream()
+                .filter(s -> s.getHabitName().equals(habit.getName()))
+                .findFirst()
+                .ifPresent(streak -> {
+                    int days = streak.getCurrentStreak();
+                    // Alert on milestone streaks
+                    if (days == 3 || days == 5 || days == 7 || days == 10 || days == 14 || days == 21 || days == 30 || days == 50 || days == 100) {
+                        notificationService.createNotification(user, 
+                            "🔥 " + days + "-day streak on " + habit.getName() + "!", 
+                            NotificationType.STREAK);
+                    }
+                });
+        }
+
+        return toDTO(savedLog);
     }
 
     public List<HabitLogDTO> getLogsForHabit(String username, Long habitId, Integer month, Integer year) {
