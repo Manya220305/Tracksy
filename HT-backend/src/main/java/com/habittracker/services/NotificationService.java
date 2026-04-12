@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,11 +45,17 @@ public class NotificationService {
 
     @Transactional
     public void createNotification(User user, String message, NotificationType type) {
+        createNotification(user, message, type, null);
+    }
+
+    @Transactional
+    public void createNotification(User user, String message, NotificationType type, Long habitId) {
         try {
             Notification notification = Notification.builder()
                     .user(user)
                     .message(message)
                     .type(type)
+                    .habitId(habitId)
                     .isRead(false)
                     .build();
             notificationRepository.save(notification);
@@ -56,6 +63,11 @@ public class NotificationService {
         } catch (Exception e) {
             log.error("Failed to create notification for user {}", user.getUsername(), e);
         }
+    }
+
+    public boolean isAlreadyNotifiedToday(User user, Long habitId, NotificationType type) {
+        LocalDateTime startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+        return notificationRepository.existsByUserAndHabitIdAndTypeAndCreatedAtAfter(user, habitId, type, startOfDay);
     }
 
     private NotificationDTO toDTO(Notification notification) {

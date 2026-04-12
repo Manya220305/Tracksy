@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,7 @@ public class HabitService {
                 .category(dto.getCategory())
                 .frequency(dto.getFrequency() != null ? dto.getFrequency() : "Daily")
                 .difficulty(dto.getDifficulty() != null ? dto.getDifficulty() : "Medium")
+                .scheduledTime(dto.getScheduledTime() != null ? LocalTime.parse(dto.getScheduledTime()) : null)
                 .build();
         Habit saved = habitRepository.save(habit);
         notificationService.createNotification(user, "New habit created: " + saved.getName(), NotificationType.SYSTEM);
@@ -58,6 +60,9 @@ public class HabitService {
         if (dto.getCategory() != null) habit.setCategory(dto.getCategory());
         if (dto.getFrequency() != null) habit.setFrequency(dto.getFrequency());
         if (dto.getDifficulty() != null) habit.setDifficulty(dto.getDifficulty());
+        if (dto.getScheduledTime() != null) {
+            habit.setScheduledTime(LocalTime.parse(dto.getScheduledTime()));
+        }
 
         return toDTO(habitRepository.save(habit));
     }
@@ -103,6 +108,9 @@ public class HabitService {
         dto.setCategory(habit.getCategory());
         dto.setFrequency(habit.getFrequency());
         dto.setDifficulty(habit.getDifficulty());
+        if (habit.getScheduledTime() != null) {
+            dto.setScheduledTime(habit.getScheduledTime().toString());
+        }
         return dto;
     }
 }

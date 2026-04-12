@@ -14,4 +14,5 @@ public class HabitDTO {
     private String category;
     private String frequency;
     private String difficulty;
+    private String scheduledTime;
 }

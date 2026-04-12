@@ -29,6 +29,9 @@ public class Notification {
     @Column(nullable = false)
     private NotificationType type;
 
+    @Column(name = "habit_id")
+    private Long habitId;
+
     @Column(name = "is_read", nullable = false)
     @Builder.Default
     private boolean isRead = false;
