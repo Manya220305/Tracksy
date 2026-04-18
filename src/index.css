@@ -4,31 +4,79 @@
   --color-background: var(--bg);
   --color-foreground: var(--fg);
   --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-border: var(--border);
+  --color-text-secondary: var(--text-secondary);
+  --color-shadow: var(--shadow-color);
 }
 
 @layer base {
   :root {
-    --bg: #f8fafc;
-    --fg: #0f172a;
-    --surface: #ffffff;
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
-    --border: #e2e8f0;
+    /* ── Light Mode ── */
+    --bg:             #F8FAFC;
+    --fg:             #111827;
+    --surface:        #FFFFFF;
+    --surface-raised: #F1F5F9;
+    --primary:        #6366f1;
+    --primary-hover:  #4f46e5;
+    --border:         #E5E7EB;
+    --text-secondary: #6B7280;
+    --shadow-color:   rgba(0, 0, 0, 0.06);
+
+    /* Sidebar */
+    --sidebar-width:          240px;
+    --sidebar-collapsed-width: 72px;
   }
+
   .dark {
-    --bg: #0f172a;
-    --fg: #f8fafc;
-    --surface: #1e293b;
-    --primary: #6366f1;
-    --primary-hover: #4f46e5;
-    --border: #334155;
+    /* ── Dark Mode ── */
+    --bg:             #0B1220;
+    --fg:             #E5E7EB;
+    --surface:        #111827;
+    --surface-raised: #1a2332;
+    --primary:        #818cf8;
+    --primary-hover:  #6366f1;
+    --border:         #1F2937;
+    --text-secondary: #9CA3AF;
+    --shadow-color:   rgba(0, 0, 0, 0.3);
   }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
   body {
     background-color: var(--bg);
     color: var(--fg);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Smooth theme transitions */
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease;
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+}
+
+/* ── Smooth transition helper ── */
+@layer utilities {
+  .transition-theme {
+    transition:
+      background-color 0.35s ease,
+      border-color 0.35s ease,
+      color 0.35s ease,
+      box-shadow 0.35s ease;
   }
 }

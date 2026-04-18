@@ -31,7 +31,9 @@ public class NotificationService {
 
     public List<NotificationDTO> getRecentNotifications(String username) {
         User user = getUser(username);
-        return notificationRepository.findByUserOrderByCreatedAtDesc(user, PageRequest.of(0, 7))
+        LocalDateTime cutoff = LocalDateTime.now().minusHours(24);
+        return notificationRepository.findByUserAndIsReadFalseAndCreatedAtAfterOrderByCreatedAtDesc(
+                user, cutoff, PageRequest.of(0, 10))
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());

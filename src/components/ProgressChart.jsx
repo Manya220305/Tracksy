@@ -1,79 +1,104 @@
 import React from 'react';
-import { ResponsiveContainer, Area, AreaChart, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import {
+  ResponsiveContainer, Area, AreaChart,
+  XAxis, YAxis, CartesianGrid, Tooltip,
+} from 'recharts';
 import { useHabits } from '../context/HabitContext';
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="
+      bg-[var(--color-surface)] text-[var(--color-foreground)]
+      border border-[var(--color-border)]
+      px-3 py-2.5 rounded-xl shadow-xl text-xs
+    ">
+      <p className="font-semibold mb-0.5">{label}</p>
+      <p className="text-[var(--color-primary)] font-medium">
+        {payload[0].value}% completed
+      </p>
+    </div>
+  );
+};
 
 const ProgressChart = () => {
   const { stats, loading } = useHabits();
 
   if (loading || !stats) {
-    return <div className="h-[400px] bg-[var(--color-surface)] rounded-2xl animate-pulse col-span-1 lg:col-span-2 shadow-sm border border-[var(--color-border)]"></div>;
+    return (
+      <div className="h-[380px] bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] animate-pulse" />
+    );
   }
 
-  // Transform Map<LocalDate, Double> to Array<{ name, completion }>
   const chartData = Object.entries(stats.dailyCompletionRates)
-    .sort(([dateA], [dateB]) => new Date(dateA) - new Date(dateB))
+    .sort(([a], [b]) => new Date(a) - new Date(b))
     .map(([date, rate]) => ({
       name: new Date(date).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }),
       completion: Math.round(rate),
-      rawDate: date
     }));
 
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
-          <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{label}</p>
-          <p className="text-sm text-primary font-medium">
-            Completion: {payload[0].value}%
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
-    <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border)] shadow-sm col-span-1 lg:col-span-2 transition-colors duration-300">
-      <div className="flex justify-between items-center mb-6">
+    <div className="
+      bg-[var(--color-surface)] p-4 md:p-6 rounded-2xl h-full
+      border border-[var(--color-border)]
+      shadow-sm hover:shadow-md
+      transition-all duration-300
+    ">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-4 md:mb-5">
         <div>
-          <h3 className="text-lg font-bold text-[var(--color-foreground)]">Daily Progress</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Last 30 Days Overview</p>
+          <h3 className="text-sm md:text-base font-bold text-[var(--color-foreground)]">Daily Progress</h3>
+          <p className="text-[10px] md:text-xs text-[var(--color-text-secondary)] mt-0.5">Last 30 days overview</p>
         </div>
+        <span className="
+          flex items-center gap-1.5 px-2 md:px-3 py-1 md:py-1.5 rounded-lg text-[10px] md:text-xs font-semibold
+          bg-[var(--color-primary)]/10 text-[var(--color-primary)]
+        ">
+          <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
+          Live
+        </span>
       </div>
-      
-      <div className="h-[300px] w-full">
+
+      <div className="h-[200px] md:h-[280px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
-              <linearGradient id="colorCompletion" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
+              <linearGradient id="progressGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%"  stopColor="#818cf8" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#818cf8" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" className="dark:stroke-gray-700" opacity={0.5} />
-            <XAxis 
-              dataKey="name" 
-              axisLine={false} 
-              tickLine={false} 
-              tick={{ fontSize: 10, fill: '#6b7280' }} 
+
+            <CartesianGrid
+              strokeDasharray="3 3"
+              vertical={false}
+              stroke="currentColor"
+              opacity={0.08}
+              className="text-[var(--color-text-secondary)]"
+            />
+            <XAxis
+              dataKey="name"
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 10, fill: 'var(--text-secondary)' }}
               dy={10}
             />
-            <YAxis 
-              axisLine={false} 
-              tickLine={false} 
-              tick={{ fontSize: 12, fill: '#6b7280' }}
+            <YAxis
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 11, fill: 'var(--text-secondary)' }}
               domain={[0, 100]}
               ticks={[0, 50, 100]}
             />
-            <Tooltip content={<CustomTooltip />} />
-            <Area 
-              type="monotone" 
-              dataKey="completion" 
-              stroke="#4f46e5" 
-              strokeWidth={3}
-              fillOpacity={1} 
-              fill="url(#colorCompletion)" 
-              activeDot={{ r: 6, strokeWidth: 0, fill: '#4f46e5' }}
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--primary)', strokeWidth: 1, strokeDasharray: '4 4' }} />
+            <Area
+              type="monotone"
+              dataKey="completion"
+              stroke="var(--primary)"
+              strokeWidth={2.5}
+              fillOpacity={1}
+              fill="url(#progressGradient)"
+              activeDot={{ r: 5, strokeWidth: 2, stroke: 'var(--primary)', fill: 'var(--surface)' }}
             />
           </AreaChart>
         </ResponsiveContainer>

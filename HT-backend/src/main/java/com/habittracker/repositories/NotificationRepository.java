@@ -16,6 +16,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     
     List<Notification> findByUserOrderByCreatedAtDesc(User user, Pageable pageable);
     
+    List<Notification> findByUserAndIsReadFalseAndCreatedAtAfterOrderByCreatedAtDesc(User user, LocalDateTime cutoff, Pageable pageable);
+
     @Modifying
     @Query("UPDATE Notification n SET n.isRead = true WHERE n.user = :user AND n.isRead = false")
     void markAllAsReadByUser(@Param("user") User user);

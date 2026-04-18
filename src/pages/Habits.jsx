@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import HabitForm from '../components/HabitForm';
-import { Plus, Edit2, Trash2, Search, Filter, Loader2 } from 'lucide-react';
+import { Plus, Edit2, Trash2, Search, Filter, Loader2, Clock } from 'lucide-react';
 import { useHabits } from '../context/HabitContext';
 
 const Habits = () => {
@@ -88,6 +88,7 @@ const Habits = () => {
                 <th className="p-4">Category</th>
                 <th className="p-4">Difficulty</th>
                 <th className="p-4">Frequency</th>
+                <th className="p-4 flex items-center gap-1.5"><Clock size={16} /> Time</th>
                 <th className="p-4 text-right pr-6">Actions</th>
               </tr>
             </thead>
@@ -109,6 +110,15 @@ const Habits = () => {
                   </td>
                   <td className="p-4 text-sm text-gray-600 dark:text-gray-300">
                     {habit.frequency}
+                  </td>
+                  <td className="p-4 text-sm font-medium text-primary">
+                    {habit.scheduledTime ? (
+                      <span className="flex items-center gap-1.5">
+                        {new Date(`2000-01-01T${habit.scheduledTime}`).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
+                      </span>
+                    ) : (
+                      <span className="text-gray-400">---</span>
+                    )}
                   </td>
                   <td className="p-4 pr-6">
                     <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">

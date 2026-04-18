@@ -7,8 +7,10 @@ import Dashboard from './pages/Dashboard';
 import Habits from './pages/Habits';
 import Analytics from './pages/Analytics';
 import Achievements from './pages/Achievements';
+import Planner from './pages/Planner';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Settings from './pages/Settings';
 import { useAuth } from './context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
@@ -48,6 +50,8 @@ function App() {
           <Route path="habits" element={<Habits />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="achievements" element={<Achievements />} />
+          <Route path="planner" element={<Planner />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

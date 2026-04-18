@@ -1,6 +1,6 @@
 package com.habittracker.controllers;
 
-import com.habittracker.models.Achievement;
+import com.habittracker.dto.AchievementDTO;
 import com.habittracker.services.AchievementsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +18,9 @@ public class AchievementsController {
     private final AchievementsService achievementsService;
 
     @GetMapping
-    public ResponseEntity<List<Achievement>> getAchievements(
+    public ResponseEntity<List<AchievementDTO>> getAchievements(
             @AuthenticationPrincipal UserDetails userDetails) {
-        List<Achievement> achievements = achievementsService
+        List<AchievementDTO> achievements = achievementsService
                 .getAndCheckAchievements(userDetails.getUsername());
         return ResponseEntity.ok(achievements);
     }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, X, Edit2, Trash2, CalendarDays, BarChart, Tag } from 'lucide-react';
+import { Plus, X, Edit2, Trash2, CalendarDays, BarChart, Tag, Clock } from 'lucide-react';
 
 const HabitForm = ({ onSubmit, onCancel, initialData = null }) => {
   const [formData, setFormData] = useState(
@@ -8,6 +8,7 @@ const HabitForm = ({ onSubmit, onCancel, initialData = null }) => {
       category: 'Health',
       difficulty: 'Medium',
       frequency: 'Daily',
+      scheduledTime: '',
     }
   );
 
@@ -105,6 +106,19 @@ const HabitForm = ({ onSubmit, onCancel, initialData = null }) => {
               <option key={freq} value={freq}>{freq}</option>
             ))}
           </select>
+        </div>
+        
+        {/* Scheduled Time */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5 flex items-center gap-1.5">
+            <Clock size={16} /> Scheduled Time
+          </label>
+          <input
+            type="time"
+            value={formData.scheduledTime || ''}
+            onChange={(e) => setFormData({ ...formData, scheduledTime: e.target.value })}
+            className="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all appearance-none"
+          />
         </div>
 
         {/* Action Buttons */}

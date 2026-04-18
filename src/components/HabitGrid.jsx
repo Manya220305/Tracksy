@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Check, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { Check, X, ChevronLeft, ChevronRight, Loader2, Clock } from 'lucide-react';
 import { useHabits } from '../context/HabitContext';
 import habitService from '../services/habitService';
 
@@ -110,57 +110,57 @@ const HabitGrid = () => {
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   if (habitsLoading && habits.length === 0) {
-    return <div className="h-64 bg-[var(--color-surface)] rounded-2xl animate-pulse border border-[var(--color-border)] shadow-sm"></div>;
+    return <div className="h-64 bg-[var(--color-surface)] rounded-2xl animate-pulse shadow-sm"></div>;
   }
 
   return (
-    <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-sm overflow-hidden flex flex-col">
-      <div className="p-6 border-b border-[var(--color-border)] flex justify-between items-center">
-        <div>
-          <h3 className="text-lg font-bold text-[var(--color-foreground)]">Tracksy</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Track your daily progress</p>
+    <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-sm shadow-black/5 dark:shadow-black/20 overflow-hidden flex flex-col">
+      {/* Header */}
+      <div className="px-4 md:px-5 py-3 md:py-4 border-b border-[var(--color-border)]/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div className="hidden sm:block">
+          <h3 className="text-sm font-bold text-[var(--color-foreground)]">Tracksy</h3>
+          <p className="text-[11px] text-gray-500 dark:text-gray-400">Track your daily progress</p>
         </div>
         
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-2 md:gap-3 w-full sm:w-auto">
           <select 
             value={selectedHabitId || ''} 
             onChange={(e) => setSelectedHabitId(Number(e.target.value))}
-            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-1.5 text-xs font-semibold text-[var(--color-foreground)] outline-none cursor-pointer"
+            className="flex-1 sm:flex-none bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1.5 text-[10px] md:text-[11px] font-semibold text-[var(--color-foreground)] outline-none cursor-pointer min-h-[36px]"
           >
             {habits.map(h => (
-              <option key={h.id} value={h.id}>{h.name}</option>
+              <option key={h.id} value={h.id}>
+                {h.name} {h.scheduledTime ? `(${new Date(`2000-01-01T${h.scheduledTime}`).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })})` : ''}
+              </option>
             ))}
           </select>
 
-          <div className="flex items-center gap-4 text-xs font-medium mr-4">
-            <div className="flex items-center gap-1.5 text-[var(--color-foreground)]">
-              <div className="w-5 h-5 rounded border border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold text-xs">
+          <div className="hidden lg:flex items-center gap-3 text-[10px] font-medium mr-2">
+            <div className="flex items-center gap-1 text-[var(--color-foreground)]">
+              <div className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold text-[9px]">
                 X
               </div>
-              Completed
-            </div>
-            <div className="flex items-center gap-1.5 text-[var(--color-foreground)]">
-              <div className="w-5 h-5 rounded border border-gray-300 dark:border-gray-600"></div>
-              Missed / No Data
+              Done
             </div>
           </div>
           
-          <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
-            <button onClick={handlePrevMonth} className="p-1.5 rounded-md hover:bg-white dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 shadow-sm transition-colors">
-              <ChevronLeft size={16} />
+          <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5 ml-auto sm:ml-0">
+            <button onClick={handlePrevMonth} className="p-1.5 rounded-md hover:bg-white dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
+              <ChevronLeft size={14} />
             </button>
-            <span className="px-4 text-sm font-semibold text-[var(--color-foreground)]">{monthName}</span>
-            <button onClick={handleNextMonth} className="p-1.5 rounded-md hover:bg-white dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 shadow-sm transition-colors">
-              <ChevronRight size={16} />
+            <span className="px-2 md:px-2.5 text-[10px] md:text-[11px] font-semibold text-[var(--color-foreground)] whitespace-nowrap">{monthName}</span>
+            <button onClick={handleNextMonth} className="p-1.5 rounded-md hover:bg-white dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
+              <ChevronRight size={14} />
             </button>
           </div>
         </div>
       </div>
 
-      <div className="p-6">
-        <div className="grid grid-cols-7 mb-2">
+      {/* Calendar Grid */}
+      <div className="p-3 md:p-5">
+        <div className="grid grid-cols-7 mb-1">
           {weekDays.map(day => (
-            <div key={day} className="text-center text-[10px] font-bold uppercase text-gray-400 py-2">
+            <div key={day} className="text-center text-[9px] font-bold uppercase text-gray-400/70 py-1.5">
               {day}
             </div>
           ))}
@@ -169,11 +169,11 @@ const HabitGrid = () => {
         <div className="relative">
           {(fetchingLogs || habitsLoading) && (
             <div className="absolute inset-0 bg-white/50 dark:bg-slate-900/50 flex items-center justify-center z-10">
-              <Loader2 className="animate-spin text-primary" size={32} />
+              <Loader2 className="animate-spin text-primary" size={28} />
             </div>
           )}
           
-          <div className="grid grid-cols-7 gap-2">
+          <div className="grid grid-cols-7 gap-1.5">
             {totalSlots.map((date, idx) => {
               const dateString = date ? formatDate(date.getFullYear(), date.getMonth(), date.getDate()) : null;
               
@@ -186,20 +186,21 @@ const HabitGrid = () => {
               // NO BACKGROUND COLORS
               const colorClass = "bg-transparent text-[var(--color-foreground)]";
 
-              const todayClass = isToday ? "border-2 border-blue-500 z-10" : "border-gray-200 dark:border-gray-700";
-              const cursorClass = (isPastDay || isFutureDay) ? "cursor-not-allowed opacity-70" : "cursor-pointer";
+              const todayClass = isToday ? "border-2 border-blue-500/70 z-10" : "border border-gray-200/60 dark:border-gray-700/40";
+              const cursorClass = (isPastDay || isFutureDay) ? "cursor-not-allowed" : "cursor-pointer";
+              const dimClass = (isPastDay || isFutureDay) ? "opacity-40" : "";
 
               return (
                 <button
                   key={idx}
                   disabled={!date || isPastDay || isFutureDay}
                   onClick={() => date && !isPastDay && !isFutureDay && handleToggle(dateString)}
-                  className={`relative h-14 w-full rounded-md border flex items-center justify-center transition-all duration-200 shadow-sm ${colorClass} ${todayClass} ${cursorClass} ${!date ? 'opacity-0' : ''}`}
+                  className={`relative h-11 w-full rounded-md flex items-center justify-center transition-all duration-200 ${colorClass} ${todayClass} ${cursorClass} ${dimClass} ${!date ? 'opacity-0 pointer-events-none' : ''}`}
                 >
                   {date && (
-                    <span className="text-sm font-bold select-none">
+                    <span className="text-xs font-bold select-none">
                       {status === true ? (
-                        <span className="text-xl font-black text-primary">X</span>
+                        <span className="text-base font-black text-primary">X</span>
                       ) : (
                         <span className="text-gray-400 dark:text-gray-500">{date.getDate()}</span>
                       )}
