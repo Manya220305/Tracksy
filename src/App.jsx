@@ -8,8 +8,7 @@ import Habits from './pages/Habits';
 import Analytics from './pages/Analytics';
 import Achievements from './pages/Achievements';
 import Planner from './pages/Planner';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import AuthPage from './pages/AuthPage';
 import Settings from './pages/Settings';
 import { useAuth } from './context/AuthContext';
 
@@ -34,8 +33,8 @@ function App() {
       <ToastContainer theme="dark" position="top-right" />
       <Router>
         <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<AuthPage />} />
+        <Route path="/register" element={<AuthPage />} />
         
         <Route 
           path="/" 

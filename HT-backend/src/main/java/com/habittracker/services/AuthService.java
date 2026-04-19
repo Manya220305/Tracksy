@@ -60,7 +60,7 @@ public class AuthService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         
         // Fetch user from DB once if you strictly need the email, but otherwise we could just use UserDetails
-        User user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository.findByUsernameOrEmail(request.getUsername(), request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String token = jwtUtil.generateToken(userDetails);
