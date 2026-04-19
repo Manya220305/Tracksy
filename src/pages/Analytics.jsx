@@ -28,16 +28,27 @@ const Analytics = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-20">
-        <Loader2 className="animate-spin text-primary" size={48} />
+        <Loader2 className="animate-spin text-[var(--color-primary)]" size={48} />
       </div>
     );
   }
 
   // Transform insights data for charts
-  const successRateData = insights ? Object.entries(insights.habitSuccessRates).map(([name, value]) => ({
-    name,
-    success: value
-  })) : [];
+  const successRateData = insights?.habitSuccessRates ? Object.entries(insights.habitSuccessRates).map(([name, value]) => {
+    const habit = habits.find(h => h.name === name);
+    return {
+      name,
+      success: value,
+      category: habit ? habit.category : 'Other'
+    };
+  }) : [];
+
+  const categoryColors = {
+    'Learning': '#8b5cf6', // purple-500
+    'Health': '#3b82f6',   // blue-500
+    'Mindfulness': '#10b981', // green-500
+    'Other': '#94a3b8'         // slate-400
+  };
 
   const categoryData = habits.reduce((acc, habit) => {
     const existing = acc.find(i => i.name === habit.category);
@@ -49,6 +60,28 @@ const Analytics = () => {
     return acc;
   }, []);
 
+  // Calculate Top Performer and Needs Attention
+  const performerInsights = React.useMemo(() => {
+    if (!insights || !insights.habitSuccessRates || Object.keys(insights.habitSuccessRates).length === 0) {
+      return { 
+        top: { name: 'No Data', score: 0 }, 
+        bottom: { name: 'No Data', score: 0 },
+        count: 0
+      };
+    }
+
+    const rates = Object.entries(insights.habitSuccessRates);
+    
+    const top = rates.reduce((prev, curr) => (curr[1] > prev[1] ? curr : prev));
+    const bottom = rates.reduce((prev, curr) => (curr[1] < prev[1] ? curr : prev));
+
+    return {
+      top: { name: top[0], score: top[1] },
+      bottom: { name: bottom[0], score: bottom[1] },
+      count: rates.length
+    };
+  }, [insights]);
+
   const COLORS = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
 
   return (
@@ -56,7 +89,7 @@ const Analytics = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-3xl font-bold text-[var(--color-foreground)] tracking-tight">Analytics Insights</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">Deeper look into your consistency and patterns.</p>
+          <p className="text-[var(--color-text-secondary)] mt-2 font-medium">Deeper look into your consistency and patterns.</p>
         </div>
       </div>
 
@@ -64,7 +97,7 @@ const Analytics = () => {
         {/* Heatmap Section */}
         <div className="col-span-1 lg:col-span-3 bg-[var(--color-surface)] p-8 rounded-2xl border border-[var(--color-border)] shadow-sm">
           <div className="flex items-center gap-3 mb-6">
-            <Calendar className="text-primary" />
+            <Calendar className="text-[var(--color-primary)]" />
             <h3 className="text-xl font-bold text-[var(--color-foreground)]">Consistency Heatmap</h3>
           </div>
           <Heatmap />
@@ -77,43 +110,57 @@ const Analytics = () => {
 
         {/* Insights Cards */}
         <div className="space-y-6">
-          <div className="bg-primary/5 dark:bg-primary/10 p-6 rounded-2xl border border-primary/20 shadow-sm relative overflow-hidden group">
+          <div className="bg-[var(--color-primary-muted)] p-6 rounded-2xl border border-[var(--color-primary)]/10 shadow-sm relative overflow-hidden group">
             <div className="absolute right-[-20px] top-[-20px] opacity-10 group-hover:scale-110 transition-transform duration-500">
-              <TrendingUp size={120} />
+              <TrendingUp size={120} className="text-[var(--color-primary)]" />
             </div>
-            <h4 className="text-sm font-semibold text-primary mb-1 uppercase tracking-wider">Top Performer</h4>
-            <h3 className="text-2xl font-bold text-[var(--color-foreground)] mb-2">
-              {insights?.mostConsistentHabit || 'No Data'}
+            <h4 className="text-xs font-bold text-[var(--color-primary)] mb-1 uppercase tracking-widest">Top Performer</h4>
+            <h3 className="text-2xl font-black text-[var(--color-foreground)] mb-2 truncate pr-10">
+              {performerInsights.top.name}
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Your most consistent habit this month.</p>
+            <p className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-tight">
+              {performerInsights.top.name === 'No Data' 
+                ? 'Add more logs to see insights.' 
+                : `Highest consistency at ${performerInsights.top.score}% success.`}
+            </p>
           </div>
 
-          <div className="bg-orange-500/5 dark:bg-orange-500/10 p-6 rounded-2xl border border-orange-500/20 shadow-sm relative overflow-hidden group">
-            <div className="absolute right-[-20px] top-[-20px] opacity-10 group-hover:scale-110 transition-transform duration-500 text-orange-500">
+          <div className="bg-[var(--color-warning)]/5 p-6 rounded-2xl border border-[var(--color-warning)]/20 shadow-sm relative overflow-hidden group">
+            <div className="absolute right-[-20px] top-[-20px] opacity-10 group-hover:scale-110 transition-transform duration-500 text-[var(--color-warning)]">
               <TrendingUp size={120} className="rotate-180" />
             </div>
-            <h4 className="text-sm font-semibold text-orange-500 mb-1 uppercase tracking-wider">Needs Attention</h4>
-            <h3 className="text-2xl font-bold text-[var(--color-foreground)] mb-2">
-              {insights?.leastConsistentHabit || 'No Data'}
+            <h4 className="text-xs font-bold text-[var(--color-warning)] mb-1 uppercase tracking-widest">Needs Attention</h4>
+            <h3 className="text-2xl font-black text-[var(--color-foreground)] mb-2 truncate pr-10">
+              {performerInsights.count === 1 ? 'Stay Focused' : performerInsights.bottom.name}
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Try to focus more on this habit next week.</p>
+            <p className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-tight">
+              {performerInsights.count === 0 
+                ? 'Keep tracking to identify trends.' 
+                : performerInsights.count === 1
+                  ? `You only have one habit active! Add more goals.`
+                  : `Lowest consistency at ${performerInsights.bottom.score}% success.`}
+            </p>
           </div>
         </div>
 
         {/* Success Rate Bar Chart */}
         <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border)] shadow-sm col-span-1 lg:col-span-2">
           <div className="flex items-center gap-3 mb-8">
-            <BarIcon className="text-primary" />
-            <h3 className="text-lg font-bold text-[var(--color-foreground)]">Success Rate per Habit (%)</h3>
+            <BarIcon className="text-[var(--color-primary)]" />
+            <h3 className="text-lg font-bold text-[var(--color-foreground)]">Success Rate (%)</h3>
           </div>
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={successRateData} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} opacity={0.3} />
+                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} opacity={0.1} stroke="var(--color-border)" />
                 <XAxis type="number" domain={[0, 100]} hide />
-                <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 12, className: 'dark:fill-gray-300' }} axisLine={false} tickLine={false} />
+                <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 10, fontWeight: 700, fill: 'var(--color-text-secondary)' }} axisLine={false} tickLine={false} />
                 <RechartsTooltip cursor={{ fill: 'transparent' }} />
-                <Bar dataKey="success" fill="var(--color-primary)" radius={[0, 4, 4, 0]} barSize={20} />
+                <Bar dataKey="success" radius={[0, 4, 4, 0]} barSize={16}>
+                  {successRateData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={categoryColors[entry.category] || categoryColors.Other} />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -122,7 +169,7 @@ const Analytics = () => {
         {/* Category Distribution Pie Chart */}
         <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border)] shadow-sm">
           <div className="flex items-center gap-3 mb-8">
-            <PieIcon className="text-primary" />
+            <PieIcon className="text-[var(--color-primary)]" />
             <h3 className="text-lg font-bold text-[var(--color-foreground)]">Category Mix</h3>
           </div>
           <div className="h-[300px]">
@@ -145,7 +192,7 @@ const Analytics = () => {
           </div>
           <div className="mt-4 grid grid-cols-2 gap-2">
             {categoryData.map((entry, index) => (
-              <div key={entry.name} className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+              <div key={entry.name} className="flex items-center gap-2 text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-tight">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
                 {entry.name}
               </div>

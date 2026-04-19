@@ -10,6 +10,7 @@ import java.time.LocalTime;
 public class UserSettingsDTO {
     private String username;
     private String email;
+    private String profileImageUrl;
     private boolean reminderEnabled;
     private LocalTime reminderTime;
 }

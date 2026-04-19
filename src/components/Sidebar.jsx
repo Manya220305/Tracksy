@@ -44,7 +44,7 @@ const Sidebar = () => {
         <div className="h-16 flex items-center justify-between px-4 border-b border-[var(--color-border)] flex-shrink-0">
           {/* Logo / brand */}
           <div className={`flex items-center gap-2.5 overflow-hidden transition-all duration-300 ${collapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}>
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md flex-shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-md flex-shrink-0">
               <LayoutDashboard size={16} className="text-white" />
             </div>
             <span className="font-bold text-lg text-[var(--color-foreground)] whitespace-nowrap">Tracksy</span>
@@ -52,7 +52,7 @@ const Sidebar = () => {
 
           {/* Collapsed icon (centered when no text) */}
           {collapsed && (
-            <div className="mx-auto w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
+            <div className="mx-auto w-8 h-8 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-md">
               <LayoutDashboard size={16} className="text-white" />
             </div>
           )}
@@ -93,7 +93,7 @@ const Sidebar = () => {
                   flex items-center gap-3 px-3 py-2.5 rounded-xl
                   transition-all duration-200 cursor-pointer
                   ${isActive
-                    ? 'bg-gradient-to-r from-indigo-500/20 to-purple-500/10 text-[var(--color-primary)] font-semibold shadow-sm'
+                    ? 'bg-[var(--color-primary-muted)] text-[var(--color-primary)] font-bold shadow-sm'
                     : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-foreground)]'
                   }
                   ${collapsed ? 'justify-center' : ''}
@@ -154,20 +154,19 @@ const Sidebar = () => {
             opacity: collapsed ? 0 : 1,
           }}
         >
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-500/15 to-purple-500/10 border border-indigo-500/20">
+          <div className="p-4 rounded-2xl bg-[var(--color-primary-muted)] border border-[var(--color-primary)]/10">
             <div className="flex items-center gap-2 mb-1.5">
-              <Sparkles size={14} className="text-indigo-400" />
-              <h4 className="font-semibold text-sm text-[var(--color-foreground)]">Upgrade to Pro</h4>
+              <Sparkles size={14} className="text-[var(--color-primary)]" />
+              <h4 className="font-bold text-sm text-[var(--color-foreground)]">Upgrade to Pro</h4>
             </div>
-            <p className="text-xs text-[var(--color-text-secondary)] mb-3 leading-relaxed">
+            <p className="text-xs text-[var(--color-text-secondary)] mb-3 leading-relaxed font-medium">
               Unlock unlimited habits & advanced analytics.
             </p>
             <button className="
-              w-full text-xs font-semibold py-2 rounded-xl
-              bg-gradient-to-r from-indigo-500 to-purple-600
-              hover:from-indigo-600 hover:to-purple-700
-              text-white shadow-md shadow-indigo-500/20
-              transition-all duration-200 hover:shadow-indigo-500/30 hover:scale-[1.02] active:scale-95
+              w-full text-xs font-bold py-2 rounded-xl
+              bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]
+              text-white shadow-md shadow-primary/20
+              transition-all duration-200 hover:scale-[1.02] active:scale-95
             ">
               Upgrade Now
             </button>

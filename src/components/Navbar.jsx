@@ -108,11 +108,11 @@ const Navbar = () => {
 
   const getTypeStyle = (type) => {
     switch (type) {
-      case 'ALERT':        return 'border-red-500 bg-red-500/10 text-red-500';
-      case 'STREAK':       return 'border-orange-500 bg-orange-500/10 text-orange-500';
-      case 'ACHIEVEMENT':  return 'border-yellow-500 bg-yellow-500/10 text-yellow-500';
-      case 'MISSED_HABIT': return 'border-red-600 bg-red-600/10 text-red-400';
-      default:             return 'border-indigo-500 bg-indigo-500/10 text-indigo-400';
+      case 'ALERT':        return 'border-[var(--color-error)] bg-[var(--color-error)]/10 text-[var(--color-error)]';
+      case 'STREAK':       return 'border-[var(--color-warning)] bg-[var(--color-warning)]/10 text-[var(--color-warning)]';
+      case 'ACHIEVEMENT':  return 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]';
+      case 'MISSED_HABIT': return 'border-[var(--color-error)] bg-[var(--color-error)]/10 text-[var(--color-error)]';
+      default:             return 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]';
     }
   };
 
@@ -190,7 +190,7 @@ const Navbar = () => {
             {unreadCount > 0 && (
               <span className="
                 absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center
-                rounded-full bg-red-500 ring-2 ring-[var(--color-surface)]
+                rounded-full bg-[var(--color-error)] ring-2 ring-[var(--color-surface)]
                 text-[9px] font-bold text-white
               ">
                 {unreadCount > 9 ? '9+' : unreadCount}
@@ -261,17 +261,25 @@ const Navbar = () => {
             <p className="text-sm font-semibold text-[var(--color-foreground)] capitalize leading-tight">
               {user?.username || 'Guest'}
             </p>
-            <p className="text-[10px] text-[var(--color-text-secondary)]">Free Plan</p>
+            <p className="text-[10px] text-[var(--color-text-secondary)] uppercase font-bold tracking-tight opacity-50">Free Plan</p>
           </div>
 
           <div className="
             w-9 h-9 rounded-xl flex items-center justify-center
-            bg-gradient-to-br from-indigo-500/20 to-purple-500/20
+            bg-[var(--color-primary-muted)]
             border border-[var(--color-primary)]/20
             text-[var(--color-primary)] font-bold text-sm
-            select-none
+            select-none overflow-hidden
           ">
-            {user?.username?.charAt(0).toUpperCase() || 'G'}
+            {user?.profileImageUrl ? (
+              <img 
+                src={`http://localhost:8080${user.profileImageUrl}`} 
+                alt="Profile" 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              user?.username?.charAt(0).toUpperCase() || 'G'
+            )}
           </div>
 
           <button
@@ -279,8 +287,8 @@ const Navbar = () => {
             title="Logout"
             className="
               p-2 rounded-xl
-              text-[var(--color-text-secondary)] hover:text-red-400
-              hover:bg-red-500/10
+              text-[var(--color-text-secondary)] hover:text-[var(--color-error)]
+              hover:bg-[var(--color-error)]/10
               transition-all duration-200
             "
           >

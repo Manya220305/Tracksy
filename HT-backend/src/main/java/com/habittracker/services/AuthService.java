@@ -46,6 +46,7 @@ public class AuthService {
                 .token(token)
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .profileImageUrl(user.getProfileImageUrl())
                 .message("User registered successfully")
                 .build();
     }
@@ -69,6 +70,7 @@ public class AuthService {
                 .token(token)
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .profileImageUrl(user.getProfileImageUrl())
                 .message("Login successful")
                 .build();
     }

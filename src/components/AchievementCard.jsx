@@ -61,7 +61,7 @@ const AchievementCard = ({
         {/* Badge Icon (Circular) */}
         <div className={`
           w-20 h-20 rounded-full flex items-center justify-center mb-4 border-4
-          ${earned ? activeColor + ' border-white/10 shadow-inner' : 'bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-400'}
+          ${earned ? activeColor + ' border-white/10 shadow-inner' : 'bg-[var(--color-surface-raised)] border-[var(--color-border)] text-[var(--color-text-secondary)]'}
           transition-transform duration-500 group-hover:scale-110
         `}>
           {earned ? (
@@ -87,16 +87,16 @@ const AchievementCard = ({
                 <span>Progress</span>
                 <span>{currentValue} / {targetValue}</span>
               </div>
-              <div className="h-1.5 w-full bg-[var(--color-surface-raised)] rounded-full overflow-hidden">
+              <div className="h-1.5 w-full bg-[var(--color-surface-raised)] rounded-full border border-[var(--color-border)]/50 overflow-hidden">
                 <div 
-                  className="h-full bg-gray-400 rounded-full transition-all duration-1000"
+                  className="h-full bg-[var(--color-foreground-muted)] rounded-full transition-all duration-1000"
                   style={{ width: `${percentage}%` }}
                 />
               </div>
             </>
           ) : (
             <div className="flex flex-col items-center gap-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-green-500 flex items-center gap-1">
+              <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-success)] flex items-center gap-1">
                 <CheckCircle2 size={12} /> Unlocked
               </span>
               {earnedAt && (

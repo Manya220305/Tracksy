@@ -69,13 +69,13 @@ const TasksWidget = () => {
                 className={`flex items-center gap-2.5 py-2.5 transition-all duration-200 ${
                   task.done
                     ? 'opacity-40'
-                    : 'hover:bg-gray-50/50 dark:hover:bg-gray-800/30'
+                    : ''
                 }`}
               >
                 <button
                   onClick={() => toggleTask(task.id)}
                   className={`flex-shrink-0 transition-colors ${
-                    task.done ? 'text-green-500' : 'text-gray-400 dark:text-gray-600 hover:text-indigo-500'
+                    task.done ? 'text-green-500' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-primary)]'
                   }`}
                 >
                   {task.done ? <CheckCircle2 size={16} /> : <Circle size={16} />}
@@ -83,7 +83,7 @@ const TasksWidget = () => {
                 <span
                   className={`text-xs font-medium flex-1 truncate ${
                     task.done
-                      ? 'line-through text-gray-400 dark:text-gray-500'
+                      ? 'line-through text-[var(--color-text-secondary)] opacity-50'
                       : 'text-[var(--color-foreground)]'
                   }`}
                 >
@@ -94,7 +94,7 @@ const TasksWidget = () => {
           </div>
         ) : (
           <div className="py-6 text-center">
-            <p className="text-xs text-gray-500 dark:text-gray-400">No tasks for today</p>
+            <p className="text-xs text-[var(--color-text-secondary)]">No tasks for today</p>
           </div>
         )}
       </div>
@@ -102,7 +102,7 @@ const TasksWidget = () => {
       <div className="mt-auto pt-3 border-t border-[var(--color-border)]/30">
         <button
           onClick={() => navigate('/planner')}
-          className="w-full flex items-center justify-center gap-1.5 text-[11px] text-gray-500 dark:text-gray-400 hover:text-indigo-400 font-medium py-1.5 rounded-lg hover:bg-indigo-500/5 transition-colors"
+          className="w-full flex items-center justify-center gap-1.5 text-[11px] text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] font-bold py-2 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] hover:bg-[var(--color-surface)] transition-all shadow-sm"
         >
           View All <ArrowRight size={11} />
         </button>

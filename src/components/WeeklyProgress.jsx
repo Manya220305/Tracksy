@@ -9,10 +9,10 @@ const CircularProgress = ({ value, label, statInfo }) => {
   const completed = Math.round(statInfo.completed);
   const total = statInfo.total;
 
-  let strokeColor = 'var(--border)';
-  if (value === 100) strokeColor = '#22c55e';
-  else if (value > 60) strokeColor = '#6366f1';
-  else if (value > 0)  strokeColor = '#f59e0b';
+  let strokeColor = 'var(--color-border)';
+  if (value === 100) strokeColor = 'var(--color-success)';
+  else if (value > 60) strokeColor = 'var(--color-primary)';
+  else if (value > 0)  strokeColor = 'var(--color-warning)';
 
   return (
     <div
@@ -113,11 +113,11 @@ const WeeklyProgress = () => {
       {/* Legend */}
       <div className="mt-4 flex items-center gap-3 text-[10px] text-[var(--color-text-secondary)]">
         {[
-          { color: '#22c55e', label: '100%' },
-          { color: '#6366f1', label: '>60%' },
-          { color: '#f59e0b', label: '>0%' },
+          { color: 'var(--color-success)', label: '100%' },
+          { color: 'var(--color-primary)', label: '>60%' },
+          { color: 'var(--color-warning)', label: '>0%' },
         ].map(({ color, label }) => (
-          <span key={label} className="flex items-center gap-1">
+          <span key={label} className="flex items-center gap-1 font-semibold uppercase tracking-tighter">
             <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: color }} />
             {label}
           </span>

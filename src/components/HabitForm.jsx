@@ -22,12 +22,12 @@ const HabitForm = ({ onSubmit, onCancel, initialData = null }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-[#1e293b] p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl w-full max-w-md animate-in slide-in-from-bottom-4 duration-300">
+    <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border)] shadow-2xl w-full max-w-md animate-in slide-in-from-bottom-4 duration-300">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+        <h3 className="text-xl font-bold text-[var(--color-foreground)]">
           {initialData ? 'Edit Habit' : 'Create New Habit'}
         </h3>
-        <button onClick={onCancel} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors bg-gray-100 dark:bg-gray-800 p-2 rounded-full">
+        <button onClick={onCancel} className="text-[var(--color-text-secondary)] hover:text-[var(--color-foreground)] transition-colors bg-[var(--color-surface-raised)] border border-[var(--color-border)] p-2 rounded-full">
           <X size={20} />
         </button>
       </div>
@@ -35,20 +35,20 @@ const HabitForm = ({ onSubmit, onCancel, initialData = null }) => {
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Name */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Habit Name</label>
+          <label className="block text-sm font-semibold text-[var(--color-text-secondary)] mb-1.5">Habit Name</label>
           <input
             type="text"
             required
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="e.g. Morning Jog"
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-gray-400"
+            className="w-full px-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-foreground)] focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] outline-none transition-all placeholder:text-[var(--color-text-secondary)]/50"
           />
         </div>
 
         {/* Category */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5 flex items-center gap-1.5">
+          <label className="block text-sm font-semibold text-[var(--color-text-secondary)] mb-1.5 flex items-center gap-1.5">
             <Tag size={16} /> Category
           </label>
           <div className="flex flex-wrap gap-2">
@@ -57,10 +57,10 @@ const HabitForm = ({ onSubmit, onCancel, initialData = null }) => {
                 key={cat}
                 type="button"
                 onClick={() => setFormData({ ...formData, category: cat })}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-all ${
                   formData.category === cat
-                    ? 'bg-primary text-white shadow-md shadow-primary/20'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    ? 'bg-[var(--color-primary)] text-white shadow-md shadow-primary/20'
+                    : 'bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-foreground)] hover:border-[var(--color-text-secondary)]'
                 }`}
               >
                 {cat}
@@ -71,7 +71,7 @@ const HabitForm = ({ onSubmit, onCancel, initialData = null }) => {
 
         {/* Difficulty */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5 flex items-center gap-1.5">
+          <label className="block text-sm font-semibold text-[var(--color-text-secondary)] mb-1.5 flex items-center gap-1.5">
             <BarChart size={16} /> Difficulty
           </label>
           <div className="flex gap-2">
@@ -80,10 +80,10 @@ const HabitForm = ({ onSubmit, onCancel, initialData = null }) => {
                 key={diff}
                 type="button"
                 onClick={() => setFormData({ ...formData, difficulty: diff })}
-                className={`flex-1 py-2 rounded-xl text-sm font-medium border-2 transition-colors ${
+                className={`flex-1 py-2 rounded-xl text-sm font-bold border-2 transition-all ${
                   formData.difficulty === diff
-                    ? 'border-primary bg-primary/5 text-primary'
-                    : 'border-transparent bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5 text-[var(--color-primary)]'
+                    : 'border-transparent bg-[var(--color-surface-raised)] text-[var(--color-text-secondary)] hover:text-[var(--color-foreground)] border-[var(--color-border)]'
                 }`}
               >
                 {diff}
@@ -94,30 +94,30 @@ const HabitForm = ({ onSubmit, onCancel, initialData = null }) => {
 
         {/* Frequency */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5 flex items-center gap-1.5">
+          <label className="block text-sm font-semibold text-[var(--color-text-secondary)] mb-1.5 flex items-center gap-1.5">
             <CalendarDays size={16} /> Frequency
           </label>
           <select
             value={formData.frequency}
             onChange={(e) => setFormData({ ...formData, frequency: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all appearance-none"
+            className="w-full px-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-foreground)] focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] outline-none transition-all appearance-none font-medium"
           >
             {frequencies.map((freq) => (
-              <option key={freq} value={freq}>{freq}</option>
+              <option key={freq} value={freq} className="bg-[var(--color-surface)] text-[var(--color-foreground)]">{freq}</option>
             ))}
           </select>
         </div>
         
         {/* Scheduled Time */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5 flex items-center gap-1.5">
+          <label className="block text-sm font-semibold text-[var(--color-text-secondary)] mb-1.5 flex items-center gap-1.5">
             <Clock size={16} /> Scheduled Time
           </label>
           <input
             type="time"
             value={formData.scheduledTime || ''}
             onChange={(e) => setFormData({ ...formData, scheduledTime: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all appearance-none"
+            className="w-full px-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-foreground)] focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] outline-none transition-all appearance-none font-medium"
           />
         </div>
 
@@ -126,7 +126,7 @@ const HabitForm = ({ onSubmit, onCancel, initialData = null }) => {
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 py-2.5 rounded-xl font-semibold text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            className="flex-1 py-2.5 rounded-xl font-bold text-[var(--color-text-secondary)] bg-[var(--color-surface-raised)] border border-[var(--color-border)] hover:bg-[var(--color-surface)] hover:text-[var(--color-foreground)] transition-all"
           >
             Cancel
           </button>

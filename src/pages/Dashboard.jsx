@@ -27,7 +27,7 @@ const Dashboard = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-2">
         <div>
           <h1 className="text-xl md:text-2xl font-bold text-[var(--color-foreground)] tracking-tight">Dashboard</h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5">Here's your productivity overview for today.</p>
+          <p className="text-xs md:text-sm text-[var(--color-text-secondary)] mt-0.5 font-medium">Here's your productivity overview for today.</p>
         </div>
         <button 
           onClick={() => setIsFormOpen(true)}

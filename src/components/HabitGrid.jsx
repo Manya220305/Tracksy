@@ -119,17 +119,17 @@ const HabitGrid = () => {
       <div className="px-4 md:px-5 py-3 md:py-4 border-b border-[var(--color-border)]/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div className="hidden sm:block">
           <h3 className="text-sm font-bold text-[var(--color-foreground)]">Tracksy</h3>
-          <p className="text-[11px] text-gray-500 dark:text-gray-400">Track your daily progress</p>
+          <p className="text-[11px] text-[var(--color-text-secondary)]">Track your daily progress</p>
         </div>
         
         <div className="flex flex-wrap items-center gap-2 md:gap-3 w-full sm:w-auto">
           <select 
             value={selectedHabitId || ''} 
             onChange={(e) => setSelectedHabitId(Number(e.target.value))}
-            className="flex-1 sm:flex-none bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1.5 text-[10px] md:text-[11px] font-semibold text-[var(--color-foreground)] outline-none cursor-pointer min-h-[36px]"
+            className="flex-1 sm:flex-none bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg px-2 py-1.5 text-[10px] md:text-[11px] font-semibold text-[var(--color-foreground)] outline-none cursor-pointer min-h-[36px] transition-theme shadow-sm"
           >
             {habits.map(h => (
-              <option key={h.id} value={h.id}>
+              <option key={h.id} value={h.id} className="bg-[var(--color-surface)] text-[var(--color-foreground)]">
                 {h.name} {h.scheduledTime ? `(${new Date(`2000-01-01T${h.scheduledTime}`).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })})` : ''}
               </option>
             ))}
@@ -137,19 +137,19 @@ const HabitGrid = () => {
 
           <div className="hidden lg:flex items-center gap-3 text-[10px] font-medium mr-2">
             <div className="flex items-center gap-1 text-[var(--color-foreground)]">
-              <div className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold text-[9px]">
+              <div className="w-4 h-4 rounded border border-gray-400 dark:border-gray-500 bg-slate-900 dark:bg-white flex items-center justify-center font-bold text-[9px] text-white dark:text-slate-900">
                 X
               </div>
               Done
             </div>
           </div>
           
-          <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5 ml-auto sm:ml-0">
-            <button onClick={handlePrevMonth} className="p-1.5 rounded-md hover:bg-white dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
+          <div className="flex items-center bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 rounded-lg p-0.5 ml-auto sm:ml-0 transition-theme shadow-sm">
+            <button onClick={handlePrevMonth} className="p-1.5 rounded-md hover:bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:text-[var(--color-foreground)] transition-colors">
               <ChevronLeft size={14} />
             </button>
-            <span className="px-2 md:px-2.5 text-[10px] md:text-[11px] font-semibold text-[var(--color-foreground)] whitespace-nowrap">{monthName}</span>
-            <button onClick={handleNextMonth} className="p-1.5 rounded-md hover:bg-white dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
+            <span className="px-2 md:px-2.5 text-[10px] md:text-[11px] font-bold text-[var(--color-foreground)] whitespace-nowrap min-w-[100px] text-center">{monthName}</span>
+            <button onClick={handleNextMonth} className="p-1.5 rounded-md hover:bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:text-[var(--color-foreground)] transition-colors">
               <ChevronRight size={14} />
             </button>
           </div>
@@ -160,7 +160,7 @@ const HabitGrid = () => {
       <div className="p-3 md:p-5">
         <div className="grid grid-cols-7 mb-1">
           {weekDays.map(day => (
-            <div key={day} className="text-center text-[9px] font-bold uppercase text-gray-400/70 py-1.5">
+            <div key={day} className="text-center text-[9px] font-bold uppercase text-gray-500 dark:text-gray-400 py-1.5">
               {day}
             </div>
           ))}
@@ -168,7 +168,7 @@ const HabitGrid = () => {
 
         <div className="relative">
           {(fetchingLogs || habitsLoading) && (
-            <div className="absolute inset-0 bg-white/50 dark:bg-slate-900/50 flex items-center justify-center z-10">
+            <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-sm flex items-center justify-center z-10 transition-all">
               <Loader2 className="animate-spin text-primary" size={28} />
             </div>
           )}
@@ -184,11 +184,13 @@ const HabitGrid = () => {
               const isFutureDay = dateString && dateString > todayString;
 
               // NO BACKGROUND COLORS
-              const colorClass = "bg-transparent text-[var(--color-foreground)]";
+              const colorClass = status === true 
+                ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900" 
+                : "bg-transparent text-[var(--color-foreground)]";
 
-              const todayClass = isToday ? "border-2 border-blue-500/70 z-10" : "border border-gray-200/60 dark:border-gray-700/40";
+              const todayClass = isToday ? "border-2 border-blue-500/70 z-10 shadow-sm" : "border border-[var(--color-border)]/40";
               const cursorClass = (isPastDay || isFutureDay) ? "cursor-not-allowed" : "cursor-pointer";
-              const dimClass = (isPastDay || isFutureDay) ? "opacity-40" : "";
+              const dimClass = (isPastDay || isFutureDay) ? "opacity-30" : "";
 
               return (
                 <button
@@ -200,9 +202,9 @@ const HabitGrid = () => {
                   {date && (
                     <span className="text-xs font-bold select-none">
                       {status === true ? (
-                        <span className="text-base font-black text-primary">X</span>
+                        <span className="text-base font-bold">X</span>
                       ) : (
-                        <span className="text-gray-400 dark:text-gray-500">{date.getDate()}</span>
+                        <span className="text-[var(--color-text-secondary)]">{date.getDate()}</span>
                       )}
                     </span>
                   )}

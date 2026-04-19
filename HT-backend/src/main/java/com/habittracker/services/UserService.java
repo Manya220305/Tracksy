@@ -20,6 +20,7 @@ public class UserService {
         return UserSettingsDTO.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .profileImageUrl(user.getProfileImageUrl())
                 .reminderEnabled(user.isReminderEnabled())
                 .reminderTime(user.getReminderTime())
                 .build();
@@ -54,8 +55,35 @@ public class UserService {
         return UserSettingsDTO.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .profileImageUrl(user.getProfileImageUrl())
                 .reminderEnabled(user.isReminderEnabled())
                 .reminderTime(user.getReminderTime())
                 .build();
+    }
+
+    @Transactional
+    public String uploadProfileImage(String username, org.springframework.web.multipart.MultipartFile file) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        try {
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            java.nio.file.Path uploadPath = java.nio.file.Paths.get("uploads/profiles");
+            
+            if (!java.nio.file.Files.exists(uploadPath)) {
+                java.nio.file.Files.createDirectories(uploadPath);
+            }
+
+            java.nio.file.Path filePath = uploadPath.resolve(fileName);
+            java.nio.file.Files.copy(file.getInputStream(), filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+
+            String imageUrl = "/uploads/profiles/" + fileName;
+            user.setProfileImageUrl(imageUrl);
+            userRepository.save(user);
+
+            return imageUrl;
+        } catch (java.io.IOException e) {
+            throw new RuntimeException("Could not save image", e);
+        }
     }
 }

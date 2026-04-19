@@ -42,10 +42,10 @@ const Achievements = () => {
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="bg-[var(--color-primary)]/10 px-6 py-3 rounded-2xl border border-[var(--color-primary)]/20 flex items-center gap-3">
+          <div className="bg-[var(--color-primary-muted)] px-6 py-3 rounded-2xl border border-[var(--color-primary)]/10 flex items-center gap-3">
             <Trophy size={24} className="text-[var(--color-primary)]" />
             <div className="flex flex-col">
-              <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-primary)]/60">Total Unlocked</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-primary)]/70">Total Unlocked</span>
               <span className="text-xl font-black text-[var(--color-primary)]">
                 {earned.length} / {achievements.length}
               </span>
@@ -57,7 +57,7 @@ const Achievements = () => {
       {/* Earned Section */}
       <section className="space-y-6">
         <div className="flex items-center gap-3 border-b border-[var(--color-border)] pb-4">
-          <div className="p-2 rounded-xl bg-green-500/10 text-green-500">
+          <div className="p-2 rounded-xl bg-[var(--color-success)]/10 text-[var(--color-success)]">
             <Award size={20} />
           </div>
           <h2 className="text-xl font-bold text-[var(--color-foreground)]">Earned Badges</h2>

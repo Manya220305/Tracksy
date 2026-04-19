@@ -23,7 +23,7 @@ const Heatmap = () => {
         
         // Count completions per date
         const counts = flatLogs.reduce((acc, log) => {
-          if (log.completed) {
+          if (log && log.completed && log.date) {
             acc[log.date] = (acc[log.date] || 0) + 1;
           }
           return acc;

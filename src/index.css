@@ -3,45 +3,65 @@
 @theme {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
+  --color-foreground-muted: var(--fg-muted);
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
+  --color-surface-overlay: var(--surface-overlay);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
+  --color-primary-muted: var(--primary-muted);
   --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
   --color-text-secondary: var(--text-secondary);
   --color-shadow: var(--shadow-color);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-error: var(--color-error);
   --color-auth-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
 }
 
 @layer base {
   :root {
     /* ── Light Mode ── */
-    --bg:             #F8FAFC;
-    --fg:             #111827;
-    --surface:        #FFFFFF;
-    --surface-raised: #F1F5F9;
-    --primary:        #6366f1;
-    --primary-hover:  #4f46e5;
-    --border:         #E5E7EB;
-    --text-secondary: #6B7280;
-    --shadow-color:   rgba(0, 0, 0, 0.06);
+    --bg:              #F8FAFC;
+    --fg:              #0F172A;
+    --fg-muted:        #64748B;
+    --surface:         #FFFFFF;
+    --surface-raised:  #F1F5F9;
+    --surface-overlay: #E2E8F0;
+    --primary:         #6366F1;
+    --primary-hover:   #4F46E5;
+    --primary-muted:   rgba(99, 102, 241, 0.1);
+    --border:          #E2E8F0;
+    --border-subtle:   rgba(226, 232, 240, 0.4);
+    --text-secondary:  #475569;
+    --shadow-color:    rgba(0, 0, 0, 0.05);
 
     /* Sidebar */
-    --sidebar-width:          240px;
+    --sidebar-width:           240px;
     --sidebar-collapsed-width: 72px;
+
+    /* Semantic */
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-error:   #EF4444;
   }
 
   .dark {
     /* ── Dark Mode ── */
-    --bg:             #0B1220;
-    --fg:             #E5E7EB;
-    --surface:        #111827;
-    --surface-raised: #1a2332;
-    --primary:        #818cf8;
-    --primary-hover:  #6366f1;
-    --border:         #1F2937;
-    --text-secondary: #9CA3AF;
-    --shadow-color:   rgba(0, 0, 0, 0.3);
+    --bg:              #060B15;
+    --fg:              #F8FAFC;
+    --fg-muted:        #94A3B8;
+    --surface:         #0F172A;
+    --surface-raised:  #1E293B;
+    --surface-overlay: #334155;
+    --primary:         #818CF8;
+    --primary-hover:   #6366F1;
+    --primary-muted:   rgba(129, 140, 248, 0.1);
+    --border:          #1E293B;
+    --border-subtle:   rgba(30, 41, 59, 0.4);
+    --text-secondary:  #94A3B8;
+    --shadow-color:    rgba(0, 0, 0, 0.4);
   }
 
   * {

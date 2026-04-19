@@ -54,7 +54,7 @@ const Habits = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
           <h1 className="text-3xl font-bold text-[var(--color-foreground)] tracking-tight">My Habits</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">Manage and configure your tracking goals.</p>
+          <p className="text-[var(--color-text-secondary)] mt-2 font-medium">Manage and configure your tracking goals.</p>
         </div>
         <button 
           onClick={handleCreateNew}
@@ -72,18 +72,18 @@ const Habits = () => {
             placeholder="Search your habits..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all shadow-sm text-[var(--color-foreground)] placeholder:text-gray-400"
+            className="w-full pl-10 pr-4 py-2.5 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all shadow-sm text-[var(--color-foreground)] placeholder:text-[var(--color-text-secondary)]/50"
           />
         </div>
       </div>
 
-      <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden relative">
-        {loading && habits.length === 0 && <div className="absolute inset-0 bg-white/50 dark:bg-slate-900/50 flex items-center justify-center z-10"><Loader2 className="animate-spin text-primary" size={32} /></div>}
+      <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-sm overflow-hidden relative">
+        {loading && habits.length === 0 && <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-sm flex items-center justify-center z-10"><Loader2 className="animate-spin text-primary" size={32} /></div>}
         
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 text-sm font-semibold text-gray-500 dark:text-gray-400">
+              <tr className="bg-[var(--color-surface-raised)] border-b border-[var(--color-border)] text-sm font-bold text-[var(--color-text-secondary)]">
                 <th className="p-4 pl-6">Habit Name</th>
                 <th className="p-4">Category</th>
                 <th className="p-4">Difficulty</th>
@@ -92,14 +92,14 @@ const Habits = () => {
                 <th className="p-4 text-right pr-6">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-[var(--color-border)]/50">
               {filteredHabits.map((habit) => (
-                <tr key={habit.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors group">
+                <tr key={habit.id} className="hover:bg-[var(--color-surface-raised)] transition-colors group">
                   <td className="p-4 pl-6 font-semibold text-[var(--color-foreground)]">
                     {habit.name}
                   </td>
                   <td className="p-4">
-                    <span className="px-2.5 py-1 rounded-md bg-gray-100 dark:bg-gray-800 text-xs font-medium text-gray-600 dark:text-gray-300">
+                    <span className="px-2.5 py-1 rounded-md bg-[var(--color-primary-muted)] text-[10px] font-bold text-primary uppercase tracking-tight">
                       {habit.category}
                     </span>
                   </td>
@@ -108,7 +108,7 @@ const Habits = () => {
                       {habit.difficulty}
                     </span>
                   </td>
-                  <td className="p-4 text-sm text-gray-600 dark:text-gray-300">
+                  <td className="p-4 text-sm font-medium text-[var(--color-text-secondary)]">
                     {habit.frequency}
                   </td>
                   <td className="p-4 text-sm font-medium text-primary">
@@ -142,11 +142,11 @@ const Habits = () => {
               ))}
               {filteredHabits.length === 0 && !loading && (
                 <tr>
-                  <td colSpan="5" className="p-8 text-center text-gray-500 space-y-3">
-                    <div className="text-4xl mx-auto w-12 h-12 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-full mb-2 border border-gray-200 dark:border-gray-700">
+                  <td colSpan="5" className="p-12 text-center text-[var(--color-text-secondary)] space-y-4">
+                    <div className="text-4xl mx-auto w-16 h-16 flex items-center justify-center bg-[var(--color-surface-raised)] rounded-full mb-2 border border-[var(--color-border)] shadow-inner">
                       📝
                     </div>
-                    <p>No habits found.</p>
+                    <p className="font-medium">No habits found matching your search.</p>
                   </td>
                 </tr>
               )}

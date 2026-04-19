@@ -33,4 +33,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", e.getMessage()));
         }
     }
+
+    @PostMapping("/profile-image")
+    public ResponseEntity<?> uploadProfileImage(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam("file") org.springframework.web.multipart.MultipartFile file) {
+        try {
+            String imageUrl = userService.uploadProfileImage(userDetails.getUsername(), file);
+            return ResponseEntity.ok(Map.of("url", imageUrl));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Error uploading profile image: " + e.getMessage()));
+        }
+    }
 }

@@ -43,13 +43,13 @@ const AchievementUnlockedModal = ({ isOpen, onClose, achievement }) => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.8, opacity: 0, y: 50 }}
               transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-              className="relative w-full max-w-sm overflow-hidden bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl p-6 text-center"
+              className="relative w-full max-w-sm overflow-hidden bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-2xl p-6 text-center"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                className="absolute top-4 right-4 text-[var(--color-text-secondary)] hover:text-[var(--color-foreground)] transition-colors"
               >
                 <X size={20} />
               </button>
@@ -67,11 +67,11 @@ const AchievementUnlockedModal = ({ isOpen, onClose, achievement }) => {
                   🎉 Achievement Unlocked!
                 </p>
                 
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-2xl font-bold text-[var(--color-foreground)] mb-2">
                   {achievement.title}
                 </h3>
                 
-                <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm px-4">
+                <p className="text-[var(--color-text-secondary)] mb-6 text-sm px-4">
                   {achievement.description}
                 </p>
 
