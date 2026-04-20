@@ -130,7 +130,7 @@ const LandingPage = () => {
       <section id="hero" className="min-h-screen flex flex-col lg:flex-row overflow-hidden">
         
         {/* Left Side: Branding (Marketing) */}
-        <div className="hidden lg:flex lg:w-3/5 relative overflow-hidden bg-auth-gradient">
+        <div className="hidden lg:flex lg:w-3/5 relative overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-primary">
           <div className="absolute inset-0 opacity-20 pointer-events-none">
             <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/30 rounded-full blur-3xl animate-float"></div>
             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '-3s' }}></div>
@@ -524,7 +524,7 @@ const LandingPage = () => {
       </section>
 
       {/* --- SECTION 4: MOTIVATION & STATS --- */}
-      <section className="py-24 px-6 md:px-12 bg-auth-gradient text-white relative overflow-hidden">
+      <section className="py-24 px-6 md:px-12 bg-gradient-to-br from-indigo-500 via-purple-500 to-primary text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="max-w-7xl mx-auto relative z-10 text-center">
             <h2 className="text-5xl md:text-7xl font-black mb-8 animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000">

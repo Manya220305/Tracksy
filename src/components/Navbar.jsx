@@ -154,6 +154,11 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="Search habits, tasks…"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && e.target.value.trim() !== '') {
+                toast.info(<span><strong>Coming Soon!</strong> Global search is under development 🚀</span>);
+              }
+            }}
             className="
               w-full pl-9 pr-4 py-2 text-sm rounded-xl outline-none
               bg-[var(--color-surface-raised)]
@@ -285,7 +290,7 @@ const Navbar = () => {
           ">
             {user?.profileImageUrl ? (
               <img 
-                src={`http://localhost:8080${user.profileImageUrl}`} 
+                src={`http://localhost:8080/api${user.profileImageUrl}`} 
                 alt="Profile" 
                 className="w-full h-full object-cover"
               />

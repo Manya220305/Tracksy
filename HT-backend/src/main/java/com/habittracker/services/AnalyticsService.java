@@ -52,7 +52,7 @@ public class AnalyticsService {
             int longestStreak = 0;
             int tempStreak = 0;
 
-            // Calculate longest streak
+            // Calculating  longest streak
             LocalDate cursor = logs.isEmpty() ? LocalDate.now() :
                     logs.get(0).getDate();
             LocalDate end = LocalDate.now();

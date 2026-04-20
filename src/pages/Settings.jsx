@@ -155,7 +155,7 @@ const Settings = () => {
                 `}>
                   {user?.profileImageUrl ? (
                     <img 
-                      src={`http://localhost:8080${user.profileImageUrl}`} 
+                      src={`http://localhost:8080/api${user.profileImageUrl}`} 
                       alt="Profile" 
                       className="w-full h-full object-cover"
                     />
