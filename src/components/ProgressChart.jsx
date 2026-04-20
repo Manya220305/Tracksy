@@ -80,25 +80,25 @@ const ProgressChart = () => {
               dataKey="name"
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 10, fill: 'var(--text-secondary)' }}
+              tick={{ fontSize: 10, fill: 'var(--color-text-secondary)' }}
               dy={10}
             />
             <YAxis
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 11, fill: 'var(--text-secondary)' }}
+              tick={{ fontSize: 11, fill: 'var(--color-text-secondary)' }}
               domain={[0, 100]}
               ticks={[0, 50, 100]}
             />
-            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--primary)', strokeWidth: 1, strokeDasharray: '4 4' }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--color-primary)', strokeWidth: 1, strokeDasharray: '4 4' }} />
             <Area
               type="monotone"
               dataKey="completion"
-              stroke="var(--primary)"
+              stroke="var(--color-primary)"
               strokeWidth={2.5}
               fillOpacity={1}
               fill="url(#progressGradient)"
-              activeDot={{ r: 5, strokeWidth: 2, stroke: 'var(--primary)', fill: 'var(--surface)' }}
+              activeDot={{ r: 5, strokeWidth: 2, stroke: 'var(--color-primary)', fill: 'var(--color-surface)' }}
             />
           </AreaChart>
         </ResponsiveContainer>

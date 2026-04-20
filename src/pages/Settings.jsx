@@ -331,25 +331,27 @@ const Settings = () => {
             </div>
             
             <div className="flex flex-col md:flex-row gap-4">
+              {/* Sign Out - Amber warning style */}
               <button 
                 onClick={logout}
-                className="flex-1 flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-red-500/30 hover:bg-red-500/5 group transition-all"
+                className="flex-1 flex items-center justify-between p-4 bg-amber-500/10 rounded-xl border border-amber-500/30 hover:bg-amber-500/20 hover:border-amber-500/60 group transition-all"
               >
                 <div className="flex items-center gap-3">
-                  <LogOut size={18} className="text-gray-400 group-hover:text-red-500 transition-colors" />
-                  <span className="text-sm font-semibold text-[var(--color-foreground)]">Sign out of account</span>
+                  <LogOut size={18} className="text-amber-500" />
+                  <span className="text-sm font-semibold text-amber-500">Sign out of account</span>
                 </div>
-                <ChevronRight size={16} className="text-gray-300" />
+                <ChevronRight size={16} className="text-amber-500/50 group-hover:text-amber-500 transition-colors" />
               </button>
               
+              {/* Delete - Solid red destructive style */}
               <button 
-                className="flex-1 flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-red-500/30 hover:bg-red-500/5 group transition-all"
+                className="flex-1 flex items-center justify-between p-4 bg-red-500/10 rounded-xl border border-red-500/30 hover:bg-red-500/20 hover:border-red-500/60 group transition-all"
               >
                 <div className="flex items-center gap-3">
-                  <Trash2 size={18} className="text-gray-400 group-hover:text-red-600 transition-colors" />
+                  <Trash2 size={18} className="text-red-500" />
                   <span className="text-sm font-semibold text-red-500">Delete my account</span>
                 </div>
-                <ChevronRight size={16} className="text-gray-300" />
+                <ChevronRight size={16} className="text-red-500/50 group-hover:text-red-500 transition-colors" />
               </button>
             </div>
           </div>

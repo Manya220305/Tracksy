@@ -15,9 +15,11 @@ const userService = {
         const formData = new FormData();
         formData.append('file', file);
         
+        // Do NOT set Content-Type manually — browser must set it with the correct
+        // multipart boundary, otherwise the server can't parse the file parts.
         const response = await api.post('/user/profile-image', formData, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': undefined
             }
         });
         return response.data;

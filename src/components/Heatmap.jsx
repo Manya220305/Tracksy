@@ -73,13 +73,12 @@ const Heatmap = () => {
       />
       
       <style>{`
-        .react-calendar-heatmap .color-empty { fill: #f1f5f9; }
-        .dark .react-calendar-heatmap .color-empty { fill: #1e293b; }
+        .react-calendar-heatmap .color-empty { fill: var(--color-surface-raised); }
         
-        .react-calendar-heatmap .color-scale-1 { fill: #c7d2fe; }
-        .react-calendar-heatmap .color-scale-2 { fill: #818cf8; }
-        .react-calendar-heatmap .color-scale-3 { fill: #4f46e5; }
-        .react-calendar-heatmap .color-scale-4 { fill: #3730a3; }
+        .react-calendar-heatmap .color-scale-1 { fill: var(--color-primary); opacity: 0.3; }
+        .react-calendar-heatmap .color-scale-2 { fill: var(--color-primary); opacity: 0.5; }
+        .react-calendar-heatmap .color-scale-3 { fill: var(--color-primary); opacity: 0.7; }
+        .react-calendar-heatmap .color-scale-4 { fill: var(--color-primary); opacity: 0.9; }
         
         .react-calendar-heatmap rect {
           rx: 2;

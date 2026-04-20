@@ -6,6 +6,15 @@ import Heatmap from '../components/Heatmap';
 import ProgressChart from '../components/ProgressChart';
 import { Loader2, TrendingUp, Calendar, PieChart as PieIcon, BarChart as BarIcon } from 'lucide-react';
 
+const categoryColors = {
+  Health:       '#10b981', // emerald green
+  Learning:     '#3b82f6', // blue
+  Mindfulness:  '#8b5cf6', // violet
+  Productivity: '#f59e0b', // amber
+  Finance:      '#06b6d4', // cyan
+  Other:        '#94a3b8', // slate
+};
+
 const Analytics = () => {
   const { habits } = useHabits();
   const [insights, setInsights] = useState(null);
@@ -25,14 +34,6 @@ const Analytics = () => {
     fetchInsights();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center p-20">
-        <Loader2 className="animate-spin text-[var(--color-primary)]" size={48} />
-      </div>
-    );
-  }
-
   // Transform insights data for charts
   const successRateData = insights?.habitSuccessRates ? Object.entries(insights.habitSuccessRates).map(([name, value]) => {
     const habit = habits.find(h => h.name === name);
@@ -42,13 +43,6 @@ const Analytics = () => {
       category: habit ? habit.category : 'Other'
     };
   }) : [];
-
-  const categoryColors = {
-    'Learning': '#8b5cf6', // purple-500
-    'Health': '#3b82f6',   // blue-500
-    'Mindfulness': '#10b981', // green-500
-    'Other': '#94a3b8'         // slate-400
-  };
 
   const categoryData = habits.reduce((acc, habit) => {
     const existing = acc.find(i => i.name === habit.category);
@@ -82,7 +76,15 @@ const Analytics = () => {
     };
   }, [insights]);
 
-  const COLORS = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-20">
+        <Loader2 className="animate-spin text-[var(--color-primary)]" size={48} />
+      </div>
+    );
+  }
+
+
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 max-w-7xl mx-auto transition-colors duration-300">
@@ -183,7 +185,7 @@ const Analytics = () => {
                   dataKey="value"
                 >
                   {categoryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none" />
+                    <Cell key={`cell-${index}`} fill={categoryColors[entry.name] || categoryColors.Other} stroke="none" />
                   ))}
                 </Pie>
                 <RechartsTooltip />
@@ -193,7 +195,7 @@ const Analytics = () => {
           <div className="mt-4 grid grid-cols-2 gap-2">
             {categoryData.map((entry, index) => (
               <div key={entry.name} className="flex items-center gap-2 text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-tight">
-                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
+                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: categoryColors[entry.name] || categoryColors.Other }}></div>
                 {entry.name}
               </div>
             ))}
