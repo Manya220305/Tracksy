@@ -10,6 +10,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
+/**
+ * Controller handling user-related API endpoints.
+ * 
+ * SYSTEM DESIGN NOTE (DTO Pattern):
+ * This controller exclusively returns and accepts Data Transfer Objects (DTOs)
+ * rather than raw Entity objects (like User).
+ * Why? 
+ * 1. Security: Prevents accidental exposure of sensitive entity fields (like passwords).
+ * 2. Decoupling: API contracts remain stable even if database schemas change.
+ */
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor

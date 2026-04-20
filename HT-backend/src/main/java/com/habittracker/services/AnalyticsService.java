@@ -10,6 +10,7 @@ import com.habittracker.repositories.HabitLogRepository;
 import com.habittracker.repositories.HabitRepository;
 import com.habittracker.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -32,6 +33,7 @@ public class AnalyticsService {
     /**
      * Returns current and longest streak for EACH habit of the user.
      */
+    @Cacheable(value = "streaks", key = "#username")
     public List<StreakResponse> getStreaks(String username) {
         User user = getUser(username);
         List<Habit> habits = habitRepository.findAllByUser(user);
@@ -82,6 +84,7 @@ public class AnalyticsService {
     /**
      * Daily completion percentage for the last 30 days.
      */
+    @Cacheable(value = "progress", key = "#username")
     public ProgressResponse getProgress(String username) {
         User user = getUser(username);
         LocalDate end = LocalDate.now();
@@ -121,6 +124,7 @@ public class AnalyticsService {
     /**
      * Per-habit success rates, most/least consistent habits.
      */
+    @Cacheable(value = "insights", key = "#username")
     public InsightsResponse getInsights(String username) {
         User user = getUser(username);
         List<Habit> habits = habitRepository.findAllByUser(user);

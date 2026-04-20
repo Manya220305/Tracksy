@@ -18,7 +18,14 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
-  const [localNotifications, setLocalNotifications] = useState([]);
+  const [localNotifications, setLocalNotifications] = useState(() => {
+    try {
+      const stored = localStorage.getItem('tracksy_unread_local');
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
 
   const fetchNotifications = async () => {
     if (!user) return;
@@ -48,7 +55,11 @@ const Navbar = () => {
   };
 
   const addLocalNotification = (notif) => {
-    setLocalNotifications(prev => [...prev, notif]);
+    setLocalNotifications(prev => {
+      const updated = [...prev, notif];
+      localStorage.setItem('tracksy_unread_local', JSON.stringify(updated));
+      return updated;
+    });
     setNotifications(prev => [...prev, notif]);
   };
 
@@ -82,6 +93,7 @@ const Navbar = () => {
       await notificationService.markAsRead();
       setNotifications([]);
       setLocalNotifications([]);
+      localStorage.removeItem('tracksy_unread_local');
     } catch (e) {
       console.error(e);
     }
