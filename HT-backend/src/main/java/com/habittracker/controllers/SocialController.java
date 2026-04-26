@@ -1,6 +1,7 @@
 package com.habittracker.controllers;
 
-import com.habittracker.models.PartnershipRequest;
+import com.habittracker.dto.PartnerDTO;
+import com.habittracker.dto.PartnershipRequestDTO;
 import com.habittracker.models.User;
 import com.habittracker.services.PartnershipService;
 import com.habittracker.services.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/social")
@@ -29,9 +31,17 @@ public class SocialController {
     }
 
     @GetMapping("/requests")
-    public ResponseEntity<List<PartnershipRequest>> getRequests(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<List<PartnershipRequestDTO>> getRequests(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userService.getUserEntityByUsername(userDetails.getUsername());
-        return ResponseEntity.ok(partnershipService.getPendingRequests(user));
+        List<PartnershipRequestDTO> dtos = partnershipService.getPendingRequests(user).stream()
+                .map(req -> PartnershipRequestDTO.builder()
+                        .id(req.getId())
+                        .sender(convertToPartnerDTO(req.getSender()))
+                        .status(req.getStatus())
+                        .createdAt(req.getCreatedAt())
+                        .build())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     @PostMapping("/accept/{requestId}")
@@ -42,8 +52,20 @@ public class SocialController {
     }
 
     @GetMapping("/partners")
-    public ResponseEntity<List<User>> getPartners(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<List<PartnerDTO>> getPartners(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userService.getUserEntityByUsername(userDetails.getUsername());
-        return ResponseEntity.ok(partnershipService.getPartners(user));
+        List<PartnerDTO> dtos = partnershipService.getPartners(user).stream()
+                .map(this::convertToPartnerDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
+    }
+
+    private PartnerDTO convertToPartnerDTO(User user) {
+        return PartnerDTO.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .profileImageUrl(user.getProfileImageUrl())
+                .currentStreak(0) // Logic for streak calculation can be added here
+                .build();
     }
 }
