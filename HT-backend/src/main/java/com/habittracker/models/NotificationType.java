@@ -1,5 +1,5 @@
 package com.habittracker.models;
 
 public enum NotificationType {
-    ALERT, STREAK, ACHIEVEMENT, SYSTEM, MISSED_HABIT
+    ALERT, STREAK, ACHIEVEMENT, SYSTEM, MISSED_HABIT, WEEKLY_DIGEST
 }

@@ -10,6 +10,7 @@ import Achievements from './pages/Achievements';
 import Planner from './pages/Planner';
 import LandingPage from './pages/LandingPage';
 import Settings from './pages/Settings';
+import TermsAndConditions from './pages/TermsAndConditions';
 import { useAuth } from './context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
@@ -35,6 +36,7 @@ function App() {
         <Routes>
         <Route path="/login" element={<LandingPage />} />
         <Route path="/register" element={<LandingPage />} />
+        <Route path="/terms" element={<TermsAndConditions />} />
         
         <Route 
           path="/" 

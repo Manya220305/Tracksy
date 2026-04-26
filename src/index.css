@@ -22,46 +22,45 @@
 
 @layer base {
   :root {
-    /* ── Light Mode ── */
+    /* ── Professional Light Mode (Midnight Architect Lite) ── */
     --bg:              #F8FAFC;
     --fg:              #0F172A;
     --fg-muted:        #64748B;
     --surface:         #FFFFFF;
     --surface-raised:  #F1F5F9;
     --surface-overlay: #E2E8F0;
-    --primary:         #6366F1;
-    --primary-hover:   #4F46E5;
-    --primary-muted:   rgba(99, 102, 241, 0.1);
+    --primary:         #4F46E5; /* Professional Indigo */
+    --primary-hover:   #4338CA;
+    --primary-muted:   rgba(79, 70, 229, 0.1);
     --border:          #E2E8F0;
     --border-subtle:   rgba(226, 232, 240, 0.4);
     --text-secondary:  #475569;
-    --shadow-color:    rgba(0, 0, 0, 0.05);
-
-    /* Sidebar */
-    --sidebar-width:           240px;
-    --sidebar-collapsed-width: 72px;
+    --shadow-color:    rgba(15, 23, 42, 0.08);
 
     /* Semantic */
-    --color-success: #10B981;
-    --color-warning: #F59E0B;
-    --color-error:   #EF4444;
+    --color-success: #059669;
+    --color-warning: #D97706;
+    --color-error:   #DC2626;
   }
 
   .dark {
-    /* ── Dark Mode ── */
-    --bg:              #060B15;
-    --fg:              #F8FAFC;
-    --fg-muted:        #94A3B8;
-    --surface:         #0F172A;
-    --surface-raised:  #1E293B;
-    --surface-overlay: #334155;
-    --primary:         #818CF8;
-    --primary-hover:   #6366F1;
-    --primary-muted:   rgba(129, 140, 248, 0.1);
+    /* ── Midnight Architect (Professional Dark) ── */
+    --bg:              #0B1326; /* Deep Midnight */
+    --fg:              #DAE2FD;
+    --fg-muted:        #C7C4D8;
+    --surface:         #0B1326;
+    --surface-raised:  #131B2E;
+    --surface-overlay: #171F33;
+    --primary:         #C3C0FF; /* High Contrast Indigo for Dark */
+    --primary-hover:   #E2DFFF;
+    --primary-muted:   rgba(195, 192, 255, 0.1);
     --border:          #1E293B;
-    --border-subtle:   rgba(30, 41, 59, 0.4);
-    --text-secondary:  #94A3B8;
-    --shadow-color:    rgba(0, 0, 0, 0.4);
+    --border-subtle:   rgba(70, 69, 85, 0.2);
+    --text-secondary:  #C7C4D8;
+    --shadow-color:    rgba(0, 0, 0, 0.5);
+
+    --primary-container: #4F46E5;
+    --on-primary-container: #DAD7FF;
   }
 
   * {
@@ -114,5 +113,21 @@
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* ── 3D Utilities ── */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .tilt-card {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+  .3d-shadow {
+    box-shadow: 
+      0 10px 20px -5px rgba(0, 0, 0, 0.3),
+      0 20px 40px -10px rgba(0, 0, 0, 0.2);
   }
 }

@@ -1,5 +1,6 @@
 package com.habittracker.controllers;
 
+import com.habittracker.dto.WeeklyReportResponse;
 import com.habittracker.dto.InsightsResponse;
 import com.habittracker.dto.ProgressResponse;
 import com.habittracker.dto.StreakResponse;
@@ -35,5 +36,11 @@ public class AnalyticsController {
     public ResponseEntity<InsightsResponse> getInsights(
             @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(analyticsService.getInsights(userDetails.getUsername()));
+    }
+
+    @GetMapping("/weekly-report")
+    public ResponseEntity<WeeklyReportResponse> getWeeklyReport(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(analyticsService.getWeeklyReport(userDetails.getUsername()));
     }
 }

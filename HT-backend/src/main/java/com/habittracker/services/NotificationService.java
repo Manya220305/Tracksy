@@ -9,6 +9,7 @@ import com.habittracker.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,6 +71,24 @@ public class NotificationService {
     public boolean isAlreadyNotifiedToday(User user, Long habitId, NotificationType type) {
         LocalDateTime startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         return notificationRepository.existsByUserAndHabitIdAndTypeAndCreatedAtAfter(user, habitId, type, startOfDay);
+    }
+
+    /**
+     * Every Sunday at 9:00 AM, notify all users that their weekly report is ready.
+     */
+    @Scheduled(cron = "0 0 9 * * SUN")
+    @Transactional
+    public void sendWeeklyDigestNotifications() {
+        log.info("Starting weekly digest notification broadcast...");
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+             createNotification(
+                 user, 
+                 "Your Weekly Digest is ready! Check out your performance from the past 7 days. 📈", 
+                 NotificationType.WEEKLY_DIGEST
+             );
+        }
+        log.info("Broadcast complete for {} users.", users.size());
     }
 
     private NotificationDTO toDTO(Notification notification) {

@@ -23,22 +23,16 @@ import {
 
 const HERO_SLIDES = [
   {
-    image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&q=80&w=1200",
-    title: "Daily Streak",
-    value: "15 Days",
-    icon: <CheckCircle2 size={24} className="text-green-400" />
+    image: "https://lh3.googleusercontent.com/aida/ADBb0ui8WEaV4F97S-jw0SiZ01zg9iU_IYaVQUwMwpslh8i8d9YvhorJIYvvMvkZU6yyS0eLAc-ISByj4mvLhFM6KEPeG-gAxBILhiuNIRiXK3fhiLxRbkBAM9ADBGExz018K8PcOLh-DMiUkiWXv4iM3JpXOdC0C54xzOB_2cqvLVw8w5YTZN_Eh5Ecwdj8qn2lxOn2ENz-69hJiP4l48eui4lDHWqwMCOyXL0NAytyUHHLaTWVx9hkaioNvGYv",
+    title: "The Midnight Architect",
+    value: "Professional Focus",
+    icon: <Target size={24} className="text-indigo-400" />
   },
   {
-    image: "https://images.unsplash.com/photo-1506784911079-5097f60bc8f4?auto=format&fit=crop&q=80&w=1200",
-    title: "Habits Logged",
-    value: "850+",
+    image: "https://i.pinimg.com/1200x/49/0c/f8/490cf84de34bc8175bc3aede91d2c457.jpg",
+    title: "Editorial Precision",
+    value: "SaaS Performance",
     icon: <Zap size={24} className="text-blue-400" />
-  },
-  {
-    image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1200",
-    title: "Goals Reached",
-    value: "92%",
-    icon: <Target size={24} className="text-orange-400" />
   }
 ];
 
@@ -47,6 +41,22 @@ const LandingPage = () => {
   const [isLogin, setIsLogin] = useState(location.pathname === '/login');
   const [currentSlide, setCurrentSlide] = useState(0);
   const scrollRef = useRef(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / 15;
+    const rotateY = (centerX - x) / 15;
+    setTilt({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
 
   useEffect(() => {
     setIsLogin(location.pathname === '/login');
@@ -130,10 +140,10 @@ const LandingPage = () => {
       <section id="hero" className="min-h-screen flex flex-col lg:flex-row overflow-hidden">
         
         {/* Left Side: Branding (Marketing) */}
-        <div className="hidden lg:flex lg:w-3/5 relative overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-primary">
-          <div className="absolute inset-0 opacity-20 pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/30 rounded-full blur-3xl animate-float"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '-3s' }}></div>
+        <div className="hidden lg:flex lg:w-3/5 relative overflow-hidden bg-gradient-to-br from-[#0B1326] via-[#131B2E] to-[#171F33]">
+          <div className="absolute inset-0 opacity-10 pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-[120px] animate-float"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[160px] animate-float" style={{ animationDelay: '-3s' }}></div>
           </div>
 
           <div className="relative z-10 w-full flex flex-col items-center justify-center p-12 text-white">
@@ -228,8 +238,26 @@ const LandingPage = () => {
         </div>
 
         {/* Right Side: Auth Form */}
-        <div className="w-full lg:w-2/5 flex flex-col justify-center items-center p-6 sm:p-12 md:p-20 bg-surface relative z-20">
-          <div className="w-full max-w-md">
+        <div className="w-full lg:w-2/5 flex flex-col justify-center items-center p-6 sm:p-12 md:p-20 bg-surface relative z-20 perspective-1000">
+          
+          {/* 3D Background Elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+             <div className="absolute top-[10%] right-[10%] w-32 h-32 bg-indigo-400/10 rounded-full blur-2xl animate-float"></div>
+             <div className="absolute bottom-[10%] left-[10%] w-48 h-48 bg-slate-400/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '-2s' }}></div>
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-indigo-500/5 to-transparent opacity-50"></div>
+          </div>
+
+          <div 
+            className="w-full max-w-md tilt-card preserve-3d"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{ 
+              transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+              boxShadow: tilt.x !== 0 || tilt.y !== 0 
+                ? `${-tilt.y * 2}px ${tilt.x * 2}px 30px rgba(0,0,0,0.15)` 
+                : '0 10px 25px -5px rgba(0,0,0,0.1)'
+            }}
+          >
             
             {/* Mobile-only Logo */}
             <div className="lg:hidden flex items-center gap-2 mb-8 justify-center">
@@ -247,12 +275,12 @@ const LandingPage = () => {
             </div>
 
             {/* Toggle Tabs */}
-            <div className="flex p-1 bg-surface-raised rounded-2xl mb-8 border border-border text-center overflow-hidden animate-in fade-in duration-700">
+            <div className="flex p-1 bg-surface-raised rounded-xl mb-8 border border-border/50 text-center overflow-hidden animate-in fade-in duration-700">
               <Link 
                 to="/login"
-                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 ${
+                className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-300 ${
                   isLogin 
-                  ? 'bg-surface text-primary shadow-sm border border-border' 
+                  ? 'bg-surface text-primary shadow-sm border border-border/50' 
                   : 'text-text-secondary hover:text-foreground'
                 }`}
               >
@@ -260,9 +288,9 @@ const LandingPage = () => {
               </Link>
               <Link 
                 to="/register"
-                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 ${
+                className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-300 ${
                   !isLogin 
-                  ? 'bg-surface text-primary shadow-sm border border-border' 
+                  ? 'bg-surface text-primary shadow-sm border border-border/50' 
                   : 'text-text-secondary hover:text-foreground'
                 }`}
               >
@@ -288,7 +316,8 @@ const LandingPage = () => {
                     placeholder="Enter your username (e.g. manya_07)" 
                     value={formData.username}
                     onChange={handleInputChange}
-                    className="w-full pl-11 pr-4 py-3.5 bg-surface border border-border rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all duration-300 font-medium placeholder:text-text-secondary/50 shadow-sm"
+                    className="w-full pl-11 pr-4 py-3.5 bg-surface border border-border rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all duration-300 font-medium placeholder:text-text-secondary/50 shadow-sm hover:shadow-md focus:translate-z-2"
+                    style={{ transform: 'translateZ(10px)' }}
                     required
                   />
                 </div>
@@ -305,7 +334,8 @@ const LandingPage = () => {
                       placeholder="name@example.com" 
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full pl-11 pr-4 py-3.5 bg-surface border border-border rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all duration-300 font-medium placeholder:text-text-secondary/50 shadow-sm"
+                      className="w-full pl-11 pr-4 py-3.5 bg-surface border border-border rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all duration-300 font-medium placeholder:text-text-secondary/50 shadow-sm hover:shadow-md focus:translate-z-2"
+                      style={{ transform: 'translateZ(10px)' }}
                       required
                     />
                   </div>
@@ -327,7 +357,8 @@ const LandingPage = () => {
                     placeholder="••••••••" 
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full pl-11 pr-4 py-3.5 bg-surface border border-border rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all duration-300 font-medium placeholder:text-text-secondary/50 shadow-sm"
+                    className="w-full pl-11 pr-4 py-3.5 bg-surface border border-border rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all duration-300 font-medium placeholder:text-text-secondary/50 shadow-sm hover:shadow-md focus:translate-z-2"
+                    style={{ transform: 'translateZ(10px)' }}
                     required
                   />
                 </div>
@@ -344,7 +375,8 @@ const LandingPage = () => {
                       placeholder="••••••••" 
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
-                      className="w-full pl-11 pr-4 py-3.5 bg-surface border border-border rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all duration-300 font-medium placeholder:text-text-secondary/50 shadow-sm"
+                      className="w-full pl-11 pr-4 py-3.5 bg-surface border border-border rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all duration-300 font-medium placeholder:text-text-secondary/50 shadow-sm hover:shadow-md focus:translate-z-2"
+                      style={{ transform: 'translateZ(10px)' }}
                       required
                     />
                   </div>
@@ -354,7 +386,8 @@ const LandingPage = () => {
               <button 
                 type="submit" 
                 disabled={loading}
-                className="w-full bg-primary hover:bg-primary-hover text-white py-4 rounded-2xl font-bold shadow-lg shadow-primary/20 transition-all duration-300 flex items-center justify-center gap-2 group active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 rounded-xl font-bold shadow-xl shadow-indigo-900/20 transition-all duration-300 flex items-center justify-center gap-2 group active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100 hover:translate-y-[-2px]"
+                style={{ transform: 'translateZ(20px)' }}
               >
                 {loading ? <Loader2 size={20} className="animate-spin" /> : (
                   <>
@@ -365,8 +398,9 @@ const LandingPage = () => {
               </button>
             </form>
 
+            {/* Social Login */}
             <div className="mt-10 animate-in fade-in duration-1000 delay-300">
-              <div className="relative mb-8">
+              <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-border"></div>
                 </div>
@@ -376,11 +410,19 @@ const LandingPage = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <button className="flex items-center justify-center gap-3 py-3 px-4 border border-border rounded-2xl hover:bg-surface-raised transition-colors duration-300 font-semibold shadow-sm group">
+                <button
+                  type="button"
+                  onClick={() => toast.info('Google Sign-In coming soon! 🚀')}
+                  className="flex items-center justify-center gap-3 py-3 px-4 border border-border rounded-2xl hover:bg-surface-raised transition-colors duration-300 font-semibold shadow-sm group"
+                >
                   <Chrome size={20} className="text-text-secondary group-hover:text-primary transition-colors" />
                   <span>Google</span>
                 </button>
-                <button className="flex items-center justify-center gap-3 py-3 px-4 border border-border rounded-2xl hover:bg-surface-raised transition-colors duration-300 font-semibold shadow-sm group">
+                <button
+                  type="button"
+                  onClick={() => toast.info('Apple Sign-In coming soon! 🍎')}
+                  className="flex items-center justify-center gap-3 py-3 px-4 border border-border rounded-2xl hover:bg-surface-raised transition-colors duration-300 font-semibold shadow-sm group"
+                >
                   <Apple size={20} className="text-text-secondary group-hover:text-foreground transition-colors" />
                   <span>Apple</span>
                 </button>
@@ -424,38 +466,38 @@ const LandingPage = () => {
                  {
                    title: "Habit Tracking",
                    desc: "Track daily habits and build unstoppable streaks with visual heatmaps.",
-                   icon: <Zap size={28} className="text-blue-500" />,
-                   color: "bg-blue-500/10"
+                   icon: <Zap size={28} className="text-indigo-400" />,
+                   color: "bg-indigo-500/5"
                  },
                  {
                    title: "Smart Planner",
                    desc: "Organize your day with integrated tasks and time-blocked schedules.",
-                   icon: <Calendar size={28} className="text-purple-500" />,
-                   color: "bg-purple-500/10"
+                   icon: <Calendar size={28} className="text-indigo-400" />,
+                   color: "bg-indigo-500/5"
                  },
                  {
                    title: "Achievements",
                    desc: "Earn badges and level up as you complete your goals and build streaks.",
-                   icon: <Award size={28} className="text-orange-500" />,
-                   color: "bg-orange-500/10"
+                   icon: <Award size={28} className="text-indigo-400" />,
+                   color: "bg-indigo-500/5"
                  },
                  {
                    title: "Analytics",
                    desc: "Visualize your progress with detailed charts and productivity trends.",
-                   icon: <BarChart3 size={28} className="text-green-500" />,
-                   color: "bg-green-500/10"
+                   icon: <BarChart3 size={28} className="text-indigo-400" />,
+                   color: "bg-indigo-500/5"
                  }
                ].map((feature, idx) => (
                  <div 
                    key={idx}
-                   className="p-8 bg-surface rounded-3xl border border-border shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 animate-on-scroll opacity-0 translate-y-10"
+                   className="p-8 bg-surface-raised rounded-2xl border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 animate-on-scroll opacity-0 translate-y-10"
                    style={{ transitionDelay: `${idx * 100}ms` }}
                  >
-                    <div className={`w-14 h-14 rounded-2xl ${feature.color} flex items-center justify-center mb-6`}>
+                    <div className={`w-14 h-14 rounded-xl ${feature.color} flex items-center justify-center mb-6 border border-indigo-500/10`}>
                        {feature.icon}
                     </div>
                     <h4 className="text-xl font-bold mb-3">{feature.title}</h4>
-                    <p className="text-text-secondary leading-relaxed">
+                    <p className="text-text-secondary leading-relaxed text-sm">
                        {feature.desc}
                     </p>
                  </div>
@@ -576,10 +618,7 @@ const LandingPage = () => {
                <span className="font-bold text-foreground">Tracksy © 2026</span>
             </div>
             <div className="flex gap-10">
-               <a href="#" className="hover:text-primary transition-colors">Privacy</a>
-               <a href="#" className="hover:text-primary transition-colors">Terms</a>
-               <a href="#" className="hover:text-primary transition-colors">Contact</a>
-               <a href="#" className="hover:text-primary transition-colors">Twitter</a>
+               <Link to="/terms" className="hover:text-primary transition-colors">Terms & Conditions</Link>
             </div>
          </footer>
       </section>

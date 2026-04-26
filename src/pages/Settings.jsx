@@ -17,6 +17,7 @@ import {
   Loader2,
   Sparkles
 } from 'lucide-react';
+import WeeklyReportModal from '../components/WeeklyReportModal';
 import { useAuth } from '../context/AuthContext';
 import userService from '../services/userService';
 import { toast } from 'react-toastify';
@@ -28,6 +29,7 @@ const Settings = () => {
   const [darkMode, setDarkMode] = useState(() => {
     return document.documentElement.classList.contains('dark');
   });
+  const [reportModalOpen, setReportModalOpen] = useState(false);
 
   const handleEditAvatar = () => {
     fileInputRef.current?.click();
@@ -252,16 +254,24 @@ const Settings = () => {
             </div>
           </div>
 
-          <div className="p-4 bg-[var(--color-primary-muted)] border border-[var(--color-primary)]/10 rounded-2xl flex items-start gap-4 transition-theme">
-            <div className="p-2 bg-primary text-white rounded-lg shadow-md shadow-primary/20">
+          <div 
+            onClick={() => setReportModalOpen(true)}
+            className="p-4 bg-[var(--color-primary-muted)] border border-[var(--color-primary)]/10 rounded-2xl flex items-start gap-4 transition-all hover:border-primary/30 hover:bg-primary/10 cursor-pointer group"
+          >
+            <div className="p-2 bg-primary text-white rounded-lg shadow-md shadow-primary/20 group-hover:scale-110 transition-transform">
               <Sparkles size={20} />
             </div>
             <div>
               <h4 className="text-sm font-bold text-[var(--color-foreground)] mb-1">Weekly Digest</h4>
-              <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed font-medium">Receive a comprehensive report of your habit scores and productivity trends every Sunday.</p>
+              <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed font-medium">Receive a comprehensive report of your habit scores and productivity trends every Sunday. <span className="text-primary font-bold ml-1">View Preview →</span></p>
             </div>
           </div>
         </SettingCard>
+
+        <WeeklyReportModal 
+          isOpen={reportModalOpen} 
+          onClose={() => setReportModalOpen(false)} 
+        />
 
         {/* Appearance Section */}
         <SettingCard 

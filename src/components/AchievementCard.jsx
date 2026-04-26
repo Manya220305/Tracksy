@@ -1,7 +1,8 @@
 import React from 'react';
 import { 
   Trophy, Star, Award, Target, Flame, Calendar, Medal, 
-  Lock, CheckCircle2 
+  Lock, CheckCircle2, Shield, Crown, Zap, Layout, Briefcase,
+  Hexagon, Sparkles 
 } from 'lucide-react';
 
 const icons = {
@@ -11,7 +12,15 @@ const icons = {
   TARGET: Target,
   FLAME: Flame,
   CALENDAR: Calendar,
-  MEDAL: Medal
+  MEDAL: Medal,
+  SHIELD: Shield,
+  CROWN: Crown,
+  ZAP: Zap,
+  LAYOUT: Layout,
+  BRIEFCASE: Briefcase,
+  HEXAGON: Hexagon,
+  SPARKLES: Sparkles,
+  CHECK_CIRCLE: CheckCircle2
 };
 
 const AchievementCard = ({ 
@@ -35,6 +44,13 @@ const AchievementCard = ({
     pink: 'text-pink-500 bg-pink-500/10 border-pink-500/20',
     indigo: 'text-indigo-500 bg-indigo-500/10 border-indigo-500/20',
     yellow: 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20',
+    cyan: 'text-cyan-500 bg-cyan-500/10 border-cyan-500/20',
+    emerald: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20',
+    amber: 'text-amber-500 bg-amber-500/10 border-amber-500/20',
+    rose: 'text-rose-500 bg-rose-500/10 border-rose-500/20',
+    violet: 'text-violet-500 bg-violet-500/10 border-violet-500/20',
+    slate: 'text-slate-500 bg-slate-500/10 border-slate-500/20',
+    fuchsia: 'text-fuchsia-500 bg-fuchsia-500/10 border-fuchsia-500/20',
   };
 
   const progressColorMap = {
@@ -45,6 +61,13 @@ const AchievementCard = ({
     pink: 'bg-pink-500',
     indigo: 'bg-indigo-500',
     yellow: 'bg-yellow-500',
+    cyan: 'bg-cyan-500',
+    emerald: 'bg-emerald-500',
+    amber: 'bg-amber-500',
+    rose: 'bg-rose-500',
+    violet: 'bg-violet-500',
+    slate: 'bg-slate-500',
+    fuchsia: 'bg-fuchsia-500',
   };
 
   const activeColor = colorMap[color] || colorMap.blue;

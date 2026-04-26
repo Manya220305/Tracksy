@@ -134,165 +134,121 @@ const Planner = () => {
         </p>
       </div>
 
-      {/* Main content */}
-      <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
-        {/* Left — Tasks (70%) */}
-        <div className="lg:col-span-7 space-y-6">
-          {/* Add task input */}
-          <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-5 shadow-sm">
-            <h3 className="text-base font-semibold text-[var(--color-foreground)] mb-4 flex items-center gap-2">
-              <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-indigo-500 to-purple-500 inline-block" />
-              Today's Tasks
-            </h3>
-            <div className="flex gap-3">
-              <div className="flex-1 flex gap-2">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  placeholder="Add a new task..."
-                  value={newTask}
-                  onChange={e => setNewTask(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  className="flex-1 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--color-foreground)] placeholder-[var(--color-text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] transition-all font-medium"
-                />
-                <input
-                  type="text"
-                  placeholder="Time (optional)"
-                  value={newTime}
-                  onChange={e => setNewTime(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  className="w-36 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--color-foreground)] placeholder-[var(--color-text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] transition-all font-medium"
-                />
-              </div>
-              <button
-                onClick={addTask}
-                disabled={!newTask.trim()}
-                className="px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white font-bold text-sm shadow-md shadow-primary/20 hover:bg-[var(--color-primary-hover)] transition-all active:scale-95 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-2"
+      {/* Main content - Tasks (Full Width) */}
+      <div className="space-y-6">
+        {/* Add task input */}
+        <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-5 shadow-sm">
+          <h3 className="text-base font-semibold text-[var(--color-foreground)] mb-4 flex items-center gap-2">
+            <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-indigo-500 to-purple-500 inline-block" />
+            Today's Tasks
+          </h3>
+          <div className="flex gap-3">
+            <div className="flex-1 flex gap-2">
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder="Add a new task..."
+                value={newTask}
+                onChange={e => setNewTask(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="flex-1 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--color-foreground)] placeholder-[var(--color-text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] transition-all font-medium"
+              />
+              <input
+                type="text"
+                placeholder="Time (optional)"
+                value={newTime}
+                onChange={e => setNewTime(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="w-36 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--color-foreground)] placeholder-[var(--color-text-secondary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] transition-all font-medium"
+              />
+            </div>
+            <button
+              onClick={addTask}
+              disabled={!newTask.trim()}
+              className="px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white font-bold text-sm shadow-md shadow-primary/20 hover:bg-[var(--color-primary-hover)] transition-all active:scale-95 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-2"
+            >
+              <Plus size={18} />
+              Add
+            </button>
+          </div>
+        </div>
+
+        {/* Pending tasks */}
+        {pending.length > 0 && (
+          <div className="space-y-2">
+            {pending.map((task, i) => (
+              <div
+                key={task.id}
+                className="group bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-4 flex items-center gap-4 hover:border-indigo-500/30 hover:shadow-sm transition-all duration-200"
+                style={{ animationDelay: `${i * 40}ms` }}
               >
-                <Plus size={18} />
-                Add
-              </button>
-            </div>
-          </div>
-
-          {/* Pending tasks */}
-          {pending.length > 0 && (
-            <div className="space-y-2">
-              {pending.map((task, i) => (
-                <div
-                  key={task.id}
-                  className="group bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-4 flex items-center gap-4 hover:border-indigo-500/30 hover:shadow-sm transition-all duration-200"
-                  style={{ animationDelay: `${i * 40}ms` }}
-                >
-                  <button onClick={() => toggleTask(task.id)} className="flex-shrink-0 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
-                    <Circle size={22} />
-                  </button>
-                  <span className="flex-1 text-sm font-bold text-[var(--color-foreground)]">
-                    {task.title}
+                <button onClick={() => toggleTask(task.id)} className="flex-shrink-0 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
+                  <Circle size={22} />
+                </button>
+                <span className="flex-1 text-sm font-bold text-[var(--color-foreground)]">
+                  {task.title}
+                </span>
+                {task.time && (
+                  <span className="flex items-center gap-1.5 text-[10px] font-black text-[var(--color-text-secondary)] bg-[var(--color-surface-raised)] border border-[var(--color-border)] px-2.5 py-1 rounded-lg uppercase">
+                    <Clock size={12} /> {task.time}
                   </span>
-                  {task.time && (
-                    <span className="flex items-center gap-1.5 text-[10px] font-black text-[var(--color-text-secondary)] bg-[var(--color-surface-raised)] border border-[var(--color-border)] px-2.5 py-1 rounded-lg uppercase">
-                      <Clock size={12} /> {task.time}
-                    </span>
-                  )}
-                  <button
-                    onClick={() => deleteTask(task.id)}
-                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-all"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Completed tasks */}
-          {completed.length > 0 && (
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-1 mb-2">
-                Completed ({completed.length})
-              </p>
-              {completed.map(task => (
-                <div
-                  key={task.id}
-                  className="group bg-[var(--color-surface)]/60 rounded-xl border border-[var(--color-border)] p-4 flex items-center gap-4 opacity-60 hover:opacity-100 transition-all"
+                )}
+                <button
+                  onClick={() => deleteTask(task.id)}
+                  className="flex-shrink-0 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-all"
                 >
-                  <button onClick={() => toggleTask(task.id)} className="flex-shrink-0 text-[var(--color-success)]">
-                    <CheckCircle2 size={22} />
-                  </button>
-                  <span className="flex-1 text-sm font-bold text-[var(--color-text-secondary)] line-through">
-                    {task.title}
-                  </span>
-                  {task.time && (
-                    <span className="flex items-center gap-1.5 text-[10px] font-bold text-[var(--color-text-secondary)] bg-[var(--color-surface-raised)]/50 px-2.5 py-1 rounded-lg uppercase tracking-tight">
-                      <Clock size={12} /> {task.time}
-                    </span>
-                  )}
-                  <button
-                    onClick={() => deleteTask(task.id)}
-                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-all"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Empty state */}
-          {tasks.length === 0 && (
-            <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-12 flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 rounded-2xl bg-[var(--color-primary-muted)] flex items-center justify-center mb-4 border border-[var(--color-primary)]/10">
-                <ClipboardList size={28} className="text-[var(--color-primary)]" />
+                  <Trash2 size={16} />
+                </button>
               </div>
-              <h4 className="text-base font-bold text-[var(--color-foreground)] mb-1">No tasks yet</h4>
-              <p className="text-sm text-[var(--color-text-secondary)] max-w-xs font-medium">
-                Start planning your day by adding your first task above.
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* Right — Quick Schedule (30%) */}
-        <div className="lg:col-span-3">
-          <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-5 shadow-sm sticky top-6">
-            <h3 className="text-base font-semibold text-[var(--color-foreground)] mb-4 flex items-center gap-2">
-              <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-purple-500 to-pink-500 inline-block" />
-              Quick Schedule
-            </h3>
-            <div className="space-y-1">
-              {timeSlots.map(slot => {
-                const matchingTask = tasks.find(t => t.time && t.time.toLowerCase() === slot.toLowerCase() && !t.done);
-                return (
-                  <div
-                    key={slot}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
-                      matchingTask
-                        ? 'bg-[var(--color-primary-muted)] border border-[var(--color-primary)]/20'
-                        : 'hover:bg-[var(--color-surface-raised)]'
-                    }`}
-                  >
-                    <span className="w-16 text-xs font-black text-[var(--color-text-secondary)] flex-shrink-0 tracking-tighter">
-                      {slot}
-                    </span>
-                    {matchingTask ? (
-                      <span className="text-xs font-bold text-[var(--color-primary)] truncate">
-                        {matchingTask.title}
-                      </span>
-                    ) : (
-                      <span className="text-xs text-[var(--color-foreground-muted)]">—</span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-            <div className="mt-4 pt-4 border-t border-[var(--color-border)]/50">
-              <p className="text-[11px] text-[var(--color-text-secondary)] text-center font-bold uppercase tracking-tight">
-                Add a time to tasks to auto-schedule
-              </p>
-            </div>
+            ))}
           </div>
-        </div>
+        )}
+
+        {/* Completed tasks */}
+        {completed.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-1 mb-2">
+              Completed ({completed.length})
+            </p>
+            {completed.map(task => (
+              <div
+                key={task.id}
+                className="group bg-[var(--color-surface)]/60 rounded-xl border border-[var(--color-border)] p-4 flex items-center gap-4 opacity-60 hover:opacity-100 transition-all"
+              >
+                <button onClick={() => toggleTask(task.id)} className="flex-shrink-0 text-[var(--color-success)]">
+                  <CheckCircle2 size={22} />
+                </button>
+                <span className="flex-1 text-sm font-bold text-[var(--color-text-secondary)] line-through">
+                  {task.title}
+                </span>
+                {task.time && (
+                  <span className="flex items-center gap-1.5 text-[10px] font-bold text-[var(--color-text-secondary)] bg-[var(--color-surface-raised)]/50 px-2.5 py-1 rounded-lg uppercase tracking-tight">
+                    <Clock size={12} /> {task.time}
+                  </span>
+                )}
+                <button
+                  onClick={() => deleteTask(task.id)}
+                  className="flex-shrink-0 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-all"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Empty state */}
+        {tasks.length === 0 && (
+          <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-12 flex flex-col items-center justify-center text-center">
+            <div className="w-16 h-16 rounded-2xl bg-[var(--color-primary-muted)] flex items-center justify-center mb-4 border border-[var(--color-primary)]/10">
+              <ClipboardList size={28} className="text-[var(--color-primary)]" />
+            </div>
+            <h4 className="text-base font-bold text-[var(--color-foreground)] mb-1">No tasks yet</h4>
+            <p className="text-sm text-[var(--color-text-secondary)] max-w-xs font-medium">
+              Start planning your day by adding your first task above.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

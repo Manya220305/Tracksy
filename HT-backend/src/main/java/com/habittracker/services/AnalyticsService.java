@@ -1,5 +1,6 @@
 package com.habittracker.services;
 
+import com.habittracker.dto.WeeklyReportResponse;
 import com.habittracker.dto.InsightsResponse;
 import com.habittracker.dto.ProgressResponse;
 import com.habittracker.dto.StreakResponse;
@@ -158,6 +159,56 @@ public class AnalyticsService {
                 .mostConsistentHabit(mostConsistent)
                 .leastConsistentHabit(leastConsistent)
                 .averageCompletionRate(Math.round(avg * 10.0) / 10.0)
+                .build();
+    }
+
+    /**
+     * Aggregated summary for the last 7 days.
+     */
+    @Cacheable(value = "weeklyReport", key = "#username")
+    public WeeklyReportResponse getWeeklyReport(String username) {
+        User user = getUser(username);
+        LocalDate end = LocalDate.now();
+        LocalDate start = end.minusDays(6); // Last 7 days including today
+
+        List<HabitLog> logs = habitLogRepository.findByUserIdAndDateRange(user.getId(), start, end);
+        long totalHabits = habitRepository.countByUser(user);
+
+        Map<LocalDate, Long> completedPerDay = logs.stream()
+                .filter(HabitLog::getCompleted)
+                .collect(Collectors.groupingBy(HabitLog::getDate, Collectors.counting()));
+
+        Map<LocalDate, Double> dailyBreakdown = new LinkedHashMap<>();
+        int totalCompletedCount = 0;
+        
+        LocalDate d = start;
+        while (!d.isAfter(end)) {
+            long completed = completedPerDay.getOrDefault(d, 0L);
+            totalCompletedCount += completed;
+            dailyBreakdown.put(d, totalHabits == 0 ? 0.0 : (completed * 100.0 / totalHabits));
+            d = d.plusDays(1);
+        }
+
+        double avg = dailyBreakdown.values().stream()
+                .mapToDouble(Double::doubleValue).average().orElse(0.0);
+
+        // Find most consistent habit in this window
+        Map<String, Long> habitCompletions = logs.stream()
+                .filter(HabitLog::getCompleted)
+                .collect(Collectors.groupingBy(log -> log.getHabit().getName(), Collectors.counting()));
+        
+        String mostConsistent = habitCompletions.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse("None yet");
+
+        return WeeklyReportResponse.builder()
+                .totalCompleted(totalCompletedCount)
+                .averageCompletionRate(Math.round(avg * 10.0) / 10.0)
+                .mostConsistentHabit(mostConsistent)
+                .dailyBreakdown(dailyBreakdown)
+                .startDate(start)
+                .endDate(end)
                 .build();
     }
 }

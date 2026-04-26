@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,6 +28,7 @@ public class ReminderScheduler {
 
     // Runs every day at 11:30 PM (23:30) server local time
     @Scheduled(cron = "0 30 23 * * ?")
+    @Transactional
     public void sendDailyReminders() {
         log.info("Starting daily habit reminder job...");
         List<User> usersNeedingReminders = userRepository.findUsersNeedingReminders();
@@ -43,6 +45,7 @@ public class ReminderScheduler {
 
     // Runs every 5 minutes to check for missed habits based on scheduledTime
     @Scheduled(fixedRate = 300000)
+    @Transactional
     public void checkMissedHabits() {
         log.info("Starting missed habit check job...");
         List<User> users = userRepository.findAll();

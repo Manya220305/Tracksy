@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bell, Search, Moon, Sun, LogOut, CheckCheck, Menu } from 'lucide-react';
+import { Bell, Search, Moon, Sun, LogOut, CheckCheck, Menu, Sparkles } from 'lucide-react';
+import WeeklyReportModal from './WeeklyReportModal';
 import { useAuth } from '../context/AuthContext';
 import { useSidebar } from '../context/SidebarContext';
 import notificationService from '../services/notificationService';
@@ -13,6 +14,7 @@ const Navbar = () => {
   const [darkMode, setDarkMode] = useState(() =>
     document.documentElement.classList.contains('dark')
   );
+  const [reportModalOpen, setReportModalOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [lastNotificationIds, setLastNotificationIds] = useState(new Set());
   const [showDropdown, setShowDropdown] = useState(false);
@@ -124,6 +126,7 @@ const Navbar = () => {
       case 'STREAK':       return 'border-[var(--color-warning)] bg-[var(--color-warning)]/10 text-[var(--color-warning)]';
       case 'ACHIEVEMENT':  return 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]';
       case 'MISSED_HABIT': return 'border-[var(--color-error)] bg-[var(--color-error)]/10 text-[var(--color-error)]';
+      case 'WEEKLY_DIGEST': return 'border-indigo-500 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400';
       default:             return 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]';
     }
   };
@@ -145,32 +148,7 @@ const Navbar = () => {
           <Menu size={20} />
         </button>
 
-        {/* Search bar */}
-        <div className="relative w-full max-w-sm hidden sm:block group">
-          <Search
-            size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-secondary)] group-focus-within:text-[var(--color-primary)] transition-colors duration-200"
-          />
-          <input
-            type="text"
-            placeholder="Search habits, tasks…"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && e.target.value.trim() !== '') {
-                toast.info(<span><strong>Coming Soon!</strong> Global search is under development 🚀</span>);
-              }
-            }}
-            className="
-              w-full pl-9 pr-4 py-2 text-sm rounded-xl outline-none
-              bg-[var(--color-surface-raised)]
-              border border-transparent
-              focus:border-[var(--color-primary)]/40
-              focus:ring-2 focus:ring-[var(--color-primary)]/10
-              text-[var(--color-foreground)]
-              placeholder:text-[var(--color-text-secondary)]
-              transition-all duration-200
-            "
-          />
-        </div>
+
       </div>
 
       {/* Right — actions */}
@@ -250,14 +228,21 @@ const Navbar = () => {
                   notifications.slice(0, 5).map(n => (
                     <div
                       key={n.id}
+                      onClick={() => {
+                        if (n.type === 'WEEKLY_DIGEST') setReportModalOpen(true);
+                      }}
                       className={`
                         p-3 rounded-xl text-xs border-l-4 flex flex-col gap-0.5
                         ${getTypeStyle(n.type)}
                         font-medium
                         hover:brightness-110 transition-all duration-200
+                        ${n.type === 'WEEKLY_DIGEST' ? 'cursor-pointer hover:scale-[1.02]' : ''}
                       `}
                     >
-                      <span className="text-[var(--color-foreground)]">{n.message}</span>
+                      <span className="text-[var(--color-foreground)] flex items-center gap-2">
+                        {n.type === 'WEEKLY_DIGEST' && <Sparkles size={12} />}
+                        {n.message}
+                      </span>
                       <span className="text-[10px] opacity-70">
                         {formatTimeAgo(n.createdAt)}
                       </span>
@@ -268,6 +253,11 @@ const Navbar = () => {
             </div>
           )}
         </div>
+
+        <WeeklyReportModal 
+          isOpen={reportModalOpen} 
+          onClose={() => setReportModalOpen(false)} 
+        />
 
         {/* Divider */}
         <div className="h-6 w-px bg-[var(--color-border)] mx-1" />
