@@ -10,6 +10,7 @@ import Achievements from './pages/Achievements';
 import Planner from './pages/Planner';
 import LandingPage from './pages/LandingPage';
 import Settings from './pages/Settings';
+import Community from './pages/Community';
 import TermsAndConditions from './pages/TermsAndConditions';
 import { useAuth } from './context/AuthContext';
 
@@ -52,6 +53,7 @@ function App() {
           <Route path="analytics" element={<Analytics />} />
           <Route path="achievements" element={<Achievements />} />
           <Route path="planner" element={<Planner />} />
+          <Route path="community" element={<Community />} />
           <Route path="settings" element={<Settings />} />
         </Route>
 

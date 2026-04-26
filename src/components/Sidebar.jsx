@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, ListTodo, BarChart2,
   ClipboardList, Medal, Settings,
-  ChevronLeft, ChevronRight, Sparkles,
+  ChevronLeft, ChevronRight, Sparkles, Users,
 } from 'lucide-react';
 import { useSidebar } from '../context/SidebarContext';
 
@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { name: 'Analytics',   path: '/analytics',     icon: BarChart2 },
   { name: 'Planner',     path: '/planner',       icon: ClipboardList },
   { name: 'Achievements',path: '/achievements',  icon: Medal },
+  { name: 'Community',   path: '/community',     icon: Users },
   { name: 'Settings',    path: '/settings',      icon: Settings },
 ];
 

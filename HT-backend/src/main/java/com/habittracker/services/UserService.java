@@ -13,9 +13,13 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserSettingsDTO getUserSettings(String username) {
-        User user = userRepository.findByUsername(username)
+    public User getUserEntityByUsername(String username) {
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public UserSettingsDTO getUserSettings(String username) {
+        User user = getUserEntityByUsername(username);
         
         return UserSettingsDTO.builder()
                 .username(user.getUsername())
