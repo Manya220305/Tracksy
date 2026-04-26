@@ -125,7 +125,7 @@
   .tilt-card {
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
   }
-  .3d-shadow {
+  .shadow-3d {
     box-shadow: 
       0 10px 20px -5px rgba(0, 0, 0, 0.3),
       0 20px 40px -10px rgba(0, 0, 0, 0.2);
